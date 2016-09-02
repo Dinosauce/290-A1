@@ -1,0 +1,16 @@
+
+vs/
+data/
+Debug/
+Release/
+GL/
+include/
+sounds/
+
+*.dll
+*.sln
+*.lib
+*.sdf
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
