@@ -275,8 +275,10 @@ GLdouble rotationSpeed = 0.005;
 #define WELCOME						218
 #define EXIT						219
 #define NO_EXIT						222
+//Additional Textures
+#define NEX_STEP_SIDE				223
 
-// 223 Next
+// 224 Next (up to 250)
 
 
 //--------------------------------------------------------------------------------------
@@ -813,12 +815,6 @@ void CreateBoundingBoxes()
 	cam.SetAABBMaxZ(8, 4688.0);
 	cam.SetAABBMinZ(8, 0.0);
 
-	// end of phy sci block exit (top of steps)
-	cam.SetAABBMaxX(9, 35879.0);
-	cam.SetAABBMinX(9, 34320.0);
-	cam.SetAABBMaxZ(9, 43056.0);
-	cam.SetAABBMinZ(9, 41127.0);
-
 	// library end panel
 	cam.SetAABBMaxX(10, 34320.0);
 	cam.SetAABBMinX(10, 6514.0);
@@ -871,10 +867,10 @@ void CreatePlains()
 	cam.SetPlains (ZY_PLAIN, 4848.0 ,31568.0 ,9536.0, 10450.0 ,6200.0, 10000.0);
 
 	// flat land (pavement and grass)
-	cam.SetPlains (FLAT_PLAIN, 0.0, 36000.0 , 10450.0, 10450.0, 10000.0, 17000.0);
+	cam.SetPlains (FLAT_PLAIN, 0.0, 34380.0, 10450.0, 10450.0, 10000.0, 17000.0);
 	cam.SetPlains (FLAT_PLAIN, 0.0, 6500.0 , 10450.0, 10450.0, 17000.0, 40000.0);
 	cam.SetPlains (FLAT_PLAIN, 27000.0, 36000.0 , 10450.0, 10450.0, 17000.0, 40000.0);
-	cam.SetPlains (FLAT_PLAIN, 0.0, 36000.0 , 10450.0, 10450.0, 40000.0, 50000.0);
+	cam.SetPlains (FLAT_PLAIN, 0.0, 34380.0, 10450.0, 10450.0, 40000.0, 50000.0);
 	
 	// top of lower hill
 	cam.SetPlains (FLAT_PLAIN, 9000.0, 22000.0 , 10650.0, 10650.0, 19000.0, 23000.0);
@@ -907,6 +903,16 @@ void CreatePlains()
 			stepLength -= 500.0;
 			step -= 48.0;
 		}
+	}
+
+	//Steps between physics building and nexus theatre
+	step = 10450.0;
+	stepLength = 34380.0;
+	for (int i = 0; i < 11; i++)
+	{
+		cam.SetPlains(FLAT_PLAIN, stepLength, stepLength + 128.0, step, step, 41127, 43057);
+		step -= 58.0;
+		stepLength += 128.0;
 	}
 
 	// temp plain to take down to ECL1
@@ -1596,12 +1602,20 @@ void CreateTextures()
 	image = tp.LoadTexture("data/windows/windowLibLong.raw", 256, 128);
 	tp.CreateTexture(WINDOW_LIB_LONG, image, 256, 128);
 
+	//Interface Textures
 	image = tp.LoadTexture("data/map.raw", 256, 256);
 	tp.CreateTexture(217, image, 256, 256);
 	image = tp.LoadTexture("data/welcome.raw", 512, 512);
 	tp.CreateTexture(218, image, 512, 512);
 	image = tp.LoadTexture("data/thanks.raw", 512, 512);
 	tp.CreateTexture(219, image, 512, 512);
+
+	//Additional textures
+	image = tp.LoadTexture("images/SideStep.raw", 51, 485);
+	tp.CreateTexture(NEX_STEP_SIDE, image, 51, 485);
+
+	//Additional window (large) textures
+	//none
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -3781,6 +3795,20 @@ void DisplayEntranceSteps ()
 	for (int i = 293; i < 296 ; i ++) glCallList(i);
 
 
+	//Edge of stairs betweens phys and nexus buildings
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(NEX_STEP_SIDE));
+	step = 0.0;
+	step2 = -51.0;
+	for (int i = 0; i < 11; i++)
+	{
+		glPushMatrix();
+			glTranslatef(step, step2, 0.0);
+			glCallList(509);
+		glPopMatrix();
+		step += 128.0;
+		step2 += -51.0;
+	}
+
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEPS_LIBRARY));
 	step = 0.0;
 	step2 = -51.0;
@@ -3797,6 +3825,7 @@ void DisplayEntranceSteps ()
 		step += 128.0;
 		step2 += -51.0;
 	}
+
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEPS_LIBRARY_TOP));
 	glCallList(207);
 		glPushMatrix();
@@ -3834,6 +3863,7 @@ void DrawEntranceSteps ()
 	// steps next to GCL1
 	tp.CreateDisplayList (XZ, 206, 128.0, 1024.0, 34508.0, 10000.0, 41127, 1.0, 0.942);
 	tp.CreateDisplayList (XZ, 207, 256.0, 1024.0, 34352.0, 10000.0, 41127, 0.609, 0.942);
+	tp.CreateDisplayList(YZ, 509, 51.0, 485.0, 34508.0, 10000.0, 41127, 1.0, 4.0);
 	
 }
 
