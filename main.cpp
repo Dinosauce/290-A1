@@ -324,7 +324,7 @@ void reshape(int w, int h);
 void keys(unsigned char key, int x, int y);
 
 // keyboard and mouse functions
-void movementKeys(int key, int x, int y);
+void lookKeys(int key, int x, int y);
 void releaseKey(int key, int x, int y);
 void releaseKeys(unsigned char key, int x, int y);
 void Mouse(int button, int state, int x, int y);
@@ -417,7 +417,7 @@ int main(int argc, char **argv)
 	myinit();
 
 	glutIgnoreKeyRepeat(1);
-	glutSpecialFunc(movementKeys);
+	glutSpecialFunc(lookKeys);
 	glutSpecialUpFunc(releaseKey);
 	glutKeyboardUpFunc (releaseKeys);
 	glutKeyboardFunc(keys);
@@ -535,24 +535,25 @@ void reshape(int w, int h)
 //--------------------------------------------------------------------------------------
 // Keyboard Functions
 //--------------------------------------------------------------------------------------
-void movementKeys(int key, int x, int y)
+void lookKeys(int key, int x, int y)
 {
 	switch (key)
 	{
+		//Rotate camera
 		case GLUT_KEY_LEFT :
-			cam.DirectionLR(-1);
+			cam.DirectionRotateLR(-1);
 			break;
 
 		case GLUT_KEY_RIGHT : 
-			cam.DirectionLR(1);
+			cam.DirectionRotateLR(1);
 			break;
 
 		case GLUT_KEY_UP : 
-			cam.DirectionFB(1);
+			cam.DirectionLookUD(1);
 			break;
 
 		case GLUT_KEY_DOWN : 
-			cam.DirectionFB(-1);
+			cam.DirectionLookUD(-1);
 			break;
 	}
 }
@@ -562,15 +563,15 @@ void releaseKey(int key, int x, int y)
 {
 	switch (key)
 	{
-		// move left or right
+		// look left or right
 		case GLUT_KEY_LEFT : 
 		case GLUT_KEY_RIGHT : 
-			cam.DirectionLR(0);
+			cam.DirectionRotateLR(0);
 		break;
-		// move backwards or forwards
+		// look up or down
 		case GLUT_KEY_UP : 
 		case GLUT_KEY_DOWN : 
-			cam.DirectionFB(0);
+			cam.DirectionLookUD(0);
 		break;
 	}
 }
@@ -581,25 +582,25 @@ void keys(unsigned char key, int x, int y)
 	int i = 0;
 	switch (key)
 	{
-		// look left
+		// move left
 		case 'A':
 		case 'a':
-			cam.DirectionRotateLR(-1);
+			cam.DirectionLR(-1);
 			break;
-		// look right
+		// move right
 		case 'D':
 		case 'd':
-			cam.DirectionRotateLR(1);
+			cam.DirectionLR(1);
 		break;
-		// look up
+		// move forwards
 		case 'W':
 		case 'w':
-			cam.DirectionLookUD(1);
+			cam.DirectionFB(1);
 			break;
-		// look down
+		// move backwards
 		case 'S':
 		case 's':
-			cam.DirectionLookUD(-1);
+			cam.DirectionFB(-1);
 		break;
 		// display campus map
 		case 'm':
@@ -678,19 +679,19 @@ void releaseKeys(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-		// look left or right
+		// move left or right
 		case 'd' :
 		case 'D' :
 		case 'a' :
 		case 'A' :
-			cam.DirectionRotateLR(0);
+			cam.DirectionLR(0);
 		break;
-		// look left up or down
+		// move forwards or backwards
 		case 's' :
 		case 'S' :
 		case 'w' :
 		case 'W' :
-			cam.DirectionLookUD(0);
+			cam.DirectionFB(0);
 		break;
 	}
 }
