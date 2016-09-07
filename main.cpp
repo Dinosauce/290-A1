@@ -455,7 +455,7 @@ void myinit()
 	// set the world co-ordinates (used to set quadrants for bounding boxes)
 	cam.SetWorldCoordinates(36000.0, 43200.0);
 	// turn collision detection on
-	cam.SetCollisionDetectionOn(false);
+	cam.SetCollisionDetectionOn(true);
 	// set number of bounding boxes required
 	cam.SetNoBoundingBoxes(19);
 	// set starting position of user
@@ -540,11 +540,11 @@ void movementKeys(int key, int x, int y)
 	switch (key)
 	{
 		case GLUT_KEY_LEFT :
-			cam.DirectionRotateLR(-1);
+			cam.DirectionLR(-1);
 			break;
 
 		case GLUT_KEY_RIGHT : 
-			cam.DirectionRotateLR(1);
+			cam.DirectionLR(1);
 			break;
 
 		case GLUT_KEY_UP : 
@@ -562,10 +562,10 @@ void releaseKey(int key, int x, int y)
 {
 	switch (key)
 	{
-		// rotate left or right
+		// move left or right
 		case GLUT_KEY_LEFT : 
 		case GLUT_KEY_RIGHT : 
-			cam.DirectionRotateLR(0);			
+			cam.DirectionLR(0);
 		break;
 		// move backwards or forwards
 		case GLUT_KEY_UP : 
@@ -581,24 +581,24 @@ void keys(unsigned char key, int x, int y)
 	int i = 0;
 	switch (key)
 	{
-		// step left
-		case 'Z':
-		case 'z':
-			cam.DirectionLR(-1);
+		// look left
+		case 'A':
+		case 'a':
+			cam.DirectionRotateLR(-1);
 			break;
-		// step right
-		case 'X':
-		case 'x':
-			cam.DirectionLR(1);
+		// look right
+		case 'D':
+		case 'd':
+			cam.DirectionRotateLR(1);
 		break;
 		// look up
-		case 'Q':
-		case 'q':
+		case 'W':
+		case 'w':
 			cam.DirectionLookUD(1);
 			break;
 		// look down
-		case 'A':
-		case 'a':
+		case 'S':
+		case 's':
 			cam.DirectionLookUD(-1);
 		break;
 		// display campus map
@@ -678,18 +678,18 @@ void releaseKeys(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-		// step left or right
-		case 'x' :
-		case 'X' :
-		case 'z' :
-		case 'Z' :
-			cam.DirectionLR(0);
-		break;
-		// look left up or down
+		// look left or right
+		case 'd' :
+		case 'D' :
 		case 'a' :
 		case 'A' :
-		case 'q' :
-		case 'Q' :
+			cam.DirectionRotateLR(0);
+		break;
+		// look left up or down
+		case 's' :
+		case 'S' :
+		case 'w' :
+		case 'W' :
 			cam.DirectionLookUD(0);
 		break;
 	}
