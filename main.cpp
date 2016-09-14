@@ -911,7 +911,7 @@ void CreatePlains()
 	for (int i = 0; i < 11; i++)
 	{
 		cam.SetPlains(FLAT_PLAIN, stepLength, stepLength + 128.0, step, step, 41127, 43057);
-		step -= 58.0;
+		step -= 51.0;
 		stepLength += 128.0;
 	}
 
