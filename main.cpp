@@ -473,7 +473,7 @@ void myinit()
 	// turn collision detection on
 	cam.SetCollisionDetectionOn(true);
 	// set number of bounding boxes required
-	cam.SetNoBoundingBoxes(19);
+	cam.SetNoBoundingBoxes(20);
 	// set starting position of user
 	cam.Position(32000.0, 10450.0,	
 				 42000.0, 90.0);
@@ -788,16 +788,16 @@ void CreateBoundingBoxes()
 	cam.SetAABBMinZ(1, 22096.0);
 
 	// phy sci block panel 1
-	cam.SetAABBMaxX(2, 35879.0);
+	cam.SetAABBMaxX(2, 37520.0); //Extend to the length of interior wall
 	cam.SetAABBMinX(2, 33808.0);
-	cam.SetAABBMaxZ(2, 26752.0);
+	cam.SetAABBMaxZ(2, 26752.0); 
 	cam.SetAABBMinZ(2, 25344.0);
 
 	// phy sci block 2nd panel
-	cam.SetAABBMaxX(4, 35879.0);
+	cam.SetAABBMaxX(4, 36240.0); //Extend to reach interior wall
 	cam.SetAABBMinX(4, 33808.0);
 	cam.SetAABBMaxZ(4, 36319.0);
-	cam.SetAABBMinZ(4, 27559.0);
+	cam.SetAABBMinZ(4, 27303.0); //Extend to fit interior corridor
 
 	// phy sci block 2nd doorway
 	cam.SetAABBMaxX(5, 35879.0);
@@ -864,6 +864,27 @@ void CreateBoundingBoxes()
 	cam.SetAABBMinX(16, 31444.0);
 	cam.SetAABBMaxZ(16, 10395.0);
 	cam.SetAABBMinZ(16, 4590.0);
+
+	//Inside physics stairwell
+	cam.SetAABBMaxX(17, 36880.0);
+	cam.SetAABBMinX(17, 36240.0);
+	cam.SetAABBMaxZ(17, 29760.0);
+	cam.SetAABBMinZ(17, 29312.0);
+
+	//Back of physics stairwell
+	cam.SetAABBMaxX(18, 37520.0);
+	cam.SetAABBMinX(18, 36240.0);
+	cam.SetAABBMaxZ(18, 31000.0);
+	cam.SetAABBMinZ(18, 30336.0);
+
+	//East side of physics building
+	cam.SetAABBMaxX(19, 38000.0);
+	cam.SetAABBMinX(19, 37520.0);
+	cam.SetAABBMaxZ(19, 31000.0);
+	cam.SetAABBMinZ(19, 26752.0);
+
+	//Increase SetNoBoundingBoxes() when adding move, located in myinit()
+
 }
 
 //--------------------------------------------------------------------------------------
@@ -898,6 +919,11 @@ void CreatePlains()
 	cam.SetPlains (XY_PLAIN, 10000.0, 14000.0 , 10650.0, 10875.0, 23000.0, 36000.0);
 	cam.SetPlains (XY_PLAIN, 18000.0, 22000.0 , 10875.0, 10650.0, 23000.0, 36000.0);
 
+	//inside of physics building
+	cam.SetPlains(FLAT_PLAIN, 34383.0, 37520.0, 10450.0, 10450.0, 26752.0, 29312.0);
+	//middle of physics stairwell
+	cam.SetPlains(FLAT_PLAIN, 36240.0, 37520.0, 10834.0, 10834.0, 29696.0, 30336.0);//+384
+
 	//entance steps
 	step = 10450.0;
 	stepLength = 9808.0;
@@ -921,6 +947,16 @@ void CreatePlains()
 		cam.SetPlains(FLAT_PLAIN, stepLength, stepLength + 128.0, step, step, 41127, 43057);
 		step -= 51.0;
 		stepLength += 128.0;
+	}
+
+	//Phys Building steps
+	step = 10514.0;
+	stepLength = 29312.0;
+	for (int i = 0; i < 7; i++)
+	{
+		cam.SetPlains(FLAT_PLAIN, 36880.0, 37520.0, step, step, stepLength, stepLength + 64.0);
+		step += 64.0;
+		stepLength += 64.0;
 	}
 
 	// temp plain to take down to ECL1
