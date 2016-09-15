@@ -1732,6 +1732,27 @@ void DrawPhysIndoor()
 	//Main Wall South
 	tp.CreateDisplayList(XY, 526, 64.0, 64.0, 36240.0, 10064.0, 29312.0, 10.0, 12.0);
 	tp.CreateDisplayList(XY, 527, 64.0, 64.0, 36240.0, 10000.0, 29312.0, 10.0, 1.0);
+
+
+
+	//Stair Wall East
+	tp.CreateDisplayList(YZ, 531, 64.0, 64.0, 37520.0, 10064.0, 29312.0, 25.0, 16.0);
+
+	//Stair Wall Center
+	tp.CreateDisplayList(YZ, 534, 64.0, 64.0, 36880.0, 10064.0, 29312.0, 25.0, 7.0);
+	tp.CreateDisplayList(XY, 535, 64.0, 64.0, 36816.0, 10064.0, 29760.0, 1.0, 25.0);
+
+	//Stair Wall South
+	tp.CreateDisplayList(XY, 536, 64.0, 64.0, 36240.0, 10064.0, 30336.0, 20.0, 25.0);
+
+	//Stair Wall North
+	tp.CreateDisplayList(XY, 538, 64.0, 64.0, 36240.0, 10832.0, 29312.0, 20.0, 13.0);
+
+	//Stair Floor
+	tp.CreateDisplayList(XZ, 532, 64.0, 64.0, 36240.0, 10384.0, 29696.0, 20.0, 10.0);
+
+	//Stair Roof
+	tp.CreateDisplayList(XZ, 537, 64.0, 64.0, 36240.0, 11664.0, 29312.0, 20.0, 16.0);
 }
 
 void DisplayPhysIndoor()
@@ -1754,16 +1775,40 @@ void DisplayPhysIndoor()
 	glCallList(521); //West
 	
 
+	//Stair Walls
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_INDOOR_2));
+	glCallList(535);
+	glCallList(536);
+	glCallList(538);
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_INDOOR_2_X));
+	glCallList(531);
+	glPushMatrix();
+		glTranslated(-1280.0, 0.0, 0.0);
+		glCallList(531);
+	glPopMatrix();
+	glCallList(534);
+	glPushMatrix();
+		glTranslated(-64.0, 0.0, 0.0);
+		glCallList(534);
+	glPopMatrix();
+
 
 
 
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(FLOOR_INDOOR_1));
 	glCallList(515); //Entry
 	glCallList(517); //Main
+	glCallList(532); //Stairs
 
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_INDOOR));
 	glCallList(516); //Entry
 	glCallList(520); //Main
+	glCallList(537); //Stair
+
+
+
+
+
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(FLOOR_SKIRT));
 	//Entry Walls 
 	glCallList(512);
@@ -4747,10 +4792,6 @@ void DisplayLargerTextures ()
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(SWEET_MACHINE));
 	glCallList(372);
 
-	// Phys sci door 1
-	//glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_13));
-	//glCallList(373);
-
 	// Phys sci toilets
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_14));
 	glCallList(374);
@@ -4765,10 +4806,6 @@ void DisplayLargerTextures ()
 	glCallList(379);
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_17));
 	glCallList(380);
-
-	// Modeling this area
-	//glBindTexture(GL_TEXTURE_2D, tp.GetTexture(EXIT_EAST));
-	//glCallList(381);
 
 	// Chanc Doorways
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(CHANC_DOOR_1));
@@ -4929,8 +4966,6 @@ void DrawLargerTextures ()
 	tp.CreateXtoYWindowList (370, 25016.0, 35458.0, 317.12, 10000.0, 660.0, 0.96, 1.0);		// Coke Machine
 	tp.CreateXtoYWindowList (371, 25016.0, 35163.0, 255.0, 10000.0, 586.2, 0.867, 1.0);		// Coffee Machine
 	tp.CreateXtoYWindowList (372, 25016.0, 34778.0, 350.0, 10000.0, 593.22, 0.59, 1.0);		// Sweet Machine
-	// phys sci door 1
-	//tp.CreateYtoZWindowList (373, 34320.0, 10000.0, 832.0, 26752.0, 552.0, 1.0, 0.66);		// 256x169.85
 
 	// phys sci toilets
 	tp.CreateYtoZWindowList (374, 33872.0, 10000.0, 768.0, 28646.0, 322.0, 1.0, 0.833);		// 256x106.67 toilet doors
@@ -4939,9 +4974,6 @@ void DrawLargerTextures ()
 
 	tp.CreateXtoYWindowList (379, 43152.0, 33232.0, 384.0, 10000.0, 768.0, 1.0, 1.0);		// GCL1 doorway	
 	tp.CreateXtoYWindowList (380, 43152.0, 32720.0, 384.0, 10000.0, 768.0, 1.0, 1.0);		// GCL1 doorway
-
-	//modeling this area.
-	//tp.CreateYtoZWindowList(381, 36047, 9422.0, 1410.0, 41127.0, 1929.0, 0.725, 1.0);	// Exit East  375x512
 
 	tp.CreateXtoYWindowList (383, 43152.0, 11055.0, 1014.0, 10388.0, 380.0, 1.0, 0.75);	// 256x96 Library Window downstairs
 	tp.CreateXtoYWindowList (384, 43152.0, 8879.0, 1014.0, 11412.0, 444.0, 1.0, 0.876);	// 256x112 Library Window upstairs
