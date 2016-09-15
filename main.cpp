@@ -5406,8 +5406,8 @@ void DrawMapExit ()
 void CreateTextureList()
 {
 	DrawHelp();
-	DrawPhysIndoor();
-	DrawPhysSteps();
+	DrawPhysIndoor(); //511-528, 531-532, 534-538
+	DrawPhysSteps(); //529-530, 533
 
 	DrawGrass ();				// 79, 111, 198, 460-477
 	DrawChancPosts ();			// 11-15, 235-237
