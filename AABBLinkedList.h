@@ -36,10 +36,10 @@ public:
 	/** @brief Adds a node to the start of the linked list
 	* @param maxX Coordinate of bounding box vertex
 	* @param minX Coordinate of bounding box vertex
-	* @param max Coordinate of bounding box vertex
+	* @param maxY Coordinate of bounding box vertex
 	* @param minY Coordinate of bounding box vertex
 	* @param maxZ Coordinate of bounding box vertex
-	* @param mniZ Coordinate of bounding box vertex
+	* @param minZ Coordinate of bounding box vertex
 	*/
 	bool AddToStart (GLdouble maxX, GLdouble minX, GLdouble maxY,
 				     GLdouble minY, GLdouble maxZ, GLdouble minZ);
@@ -51,7 +51,7 @@ public:
 	* @param maxY Coordinate of bounding box vertex
 	* @param minY Coordinate of bounding box vertex
 	* @param maxZ Coordinate of bounding box vertex
-	* @param mniZ Coordinate of bounding box vertex
+	* @param minZ Coordinate of bounding box vertex
 	*/
 	void SetData(const int &ptrCount,
 				 const GLdouble maxX, const GLdouble minX,

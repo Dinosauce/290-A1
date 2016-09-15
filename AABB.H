@@ -23,7 +23,7 @@ using namespace std;
 #include <gl/glut.h>
 
 //--------------------------------------------------------------------------------------
-/// AABB
+/// AABB: Data structure for dynamic array of bounding boxes
 class AABB
 {
 private:

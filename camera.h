@@ -17,6 +17,7 @@
 
 //--------------------------------------------------------------------------------------
 
+/// Camera: Allows for camera navigatiom
 class Camera
 {
 public:

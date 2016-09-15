@@ -12,6 +12,7 @@
 
 //--------------------------------------------------------------------------------------
 
+/// CameraMap: Displays 2D images (e.g. HUD)
 class CameraMap
 {
 public:
@@ -20,15 +21,16 @@ public:
 
 	//----------------------------------------------------------------------------------
 
-	// display the map
+	/// Display mini map and player indicator at given world position.
 	void DisplayMap(const int & screenWidth, const int & screenHeight,
 				    const GLdouble & xPos, const GLdouble & zPos,
 					const GLuint & tempImage);
 
-	// display the welcome screen
+	/// Displays the welcoming/ tutorial screen.
 	void DisplayWelcomeScreen (const int & screenWidth, const int & screenHeight, 
 		                       const int & tempExit, const GLuint & tempImage);
 
+	/// Displays 'No exit' signs for unmapped areas.
 	void DisplayNoExit (const int & screenWidth, const int & screenHeight, 
 						const GLuint & tempImage);
 

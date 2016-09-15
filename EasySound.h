@@ -14,12 +14,6 @@
 #include "Sound.h"
 #include "SoundTime.h"
 
-/**
- * class Score: This class displays the score, bonus and time on the screen
- *
- * @author Shay Leary
- */
-
 // make sure to link this librarys or error will occur
 #pragma comment(lib, "SDL.lib")
 #pragma comment(lib, "SDLmain.lib")
