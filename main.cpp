@@ -1792,6 +1792,9 @@ void DrawPhysIndoor()
 
 	//Stair Roof
 	tp.CreateDisplayList(XZ, 537, 64.0, 64.0, 36240.0, 11664.0, 29312.0, 20.0, 16.0);
+
+	//Outside Door Roof
+	tp.CreateDisplayList(XZ, 539, 64.0, 64.0, 33908.0, 10832.0, 26752.0, 5.44, 13.0);
 }
 
 void DisplayPhysIndoor()
@@ -1871,6 +1874,10 @@ void DisplayPhysIndoor()
 		glRotatef(90.0, 1.0f, 0.0f, 0.0f);
 		glCallList(522);
 	glPopMatrix();
+
+	//Outside Door Roof
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_INDOOR_1));
+	glCallList(539);
 }
 
 void DrawPhysSteps()
