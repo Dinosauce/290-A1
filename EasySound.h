@@ -50,7 +50,7 @@ public:
 	virtual ~CEasySound();
 
 	/**
-  * CallMixAudio: ? no idea eh
+  * 
   *
   * @param unused 
   * @param stream 

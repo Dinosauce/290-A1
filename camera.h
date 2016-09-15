@@ -29,30 +29,56 @@ public:
 	//----------------------------------------------------------------------------------
 	//  Set Methods
 	//----------------------------------------------------------------------------------
-	// sets initial value for bounding boxes (in the array AABB)
+	/** @brief Sets max x of a bounding box
+	* @param tempIndex index to add bounding box data to.
+	* @param tempX value to set.
+	*/
 	void SetAABBMaxX(const int & tempIndex, const GLdouble &tempX) {m_colDetect.SetAABBMaxX(tempIndex, tempX);}
+	/** @brief Sets min x of a bounding box
+	* @param tempIndex index to add bounding box data to.
+	* @param tempX value to set.
+	*/
 	void SetAABBMinX(const int & tempIndex, const GLdouble &tempX) {m_colDetect.SetAABBMinX(tempIndex, tempX);}
+	/** @brief Sets max y of a bounding box
+	* @param tempIndex index to add bounding box data to.
+	* @param tempX value to set.
+	*/
 	void SetAABBMaxY(const int & tempIndex, const GLdouble &tempY) {m_colDetect.SetAABBMaxY(tempIndex, tempY);}
+	/** @brief Sets min y of a bounding box
+	* @param tempIndex index to add bounding box data to.
+	* @param tempX value to set.
+	*/
 	void SetAABBMinY(const int & tempIndex, const GLdouble &tempY) {m_colDetect.SetAABBMinY(tempIndex, tempY);}
+	/** @brief Sets max z of a bounding box
+	* @param tempIndex index to add bounding box data to.
+	* @param tempX value to set.
+	*/
 	void SetAABBMaxZ(const int & tempIndex, const GLdouble &tempZ) {m_colDetect.SetAABBMaxZ(tempIndex, tempZ);}
+	/** @brief Sets min z of a bounding box
+	* @param tempIndex index to add bounding box data to.
+	* @param tempX value to set.
+	*/
 	void SetAABBMinZ(const int & tempIndex, const GLdouble &tempZ) {m_colDetect.SetAABBMinZ(tempIndex, tempZ);}
 
 	// set step and rotation size
+	///Sets the speed at which the camera rotates.
 	void SetRotateSpeed (const GLdouble &tempSpeed) {m_rotateSpeed = tempSpeed;}
+	//Sets the speed at which the camera moves.
 	void SetMoveSpeed (const GLdouble &tempSpeed) {m_moveSpeed = tempSpeed;}
 
 	// COLLSION DETECTION FUNCTIONS
-	// set collision detection (TRUE = on)
+	/// set collision detection (TRUE = on)
 	void SetCollisionDetectionOn (const bool &tempCol) {m_CollisionDetectionOn = tempCol;}
-	// set number of bounding boxes
+	/// set number of bounding boxes
 	void SetNoBoundingBoxes(const int & tempSize) {m_colDetect.SetNoBoundingBoxes(tempSize);}
-	// set the co-ordinates of the world
+	/// Set the co-ordinates of the world
 	void SetWorldCoordinates (const GLdouble &tempX, const GLdouble &tempZ);
-	// creates a linked list for each quadrant of the world and places the bounding box
-	// data in each.  Then clears and deletes AABB array.
+	///Sets the bounding boxes for collision detection.
 	void InitiateBoundingBoxes() {m_colDetect.CreateLinkedList();}
 
-	// sets the co-ordinate of each plain
+	/** @brief set a plains for the camera to follor
+	* @param tempType sets the type of plain to create
+	*/
 	void SetPlains (const int tempType,
 				    const GLdouble tempXs, const GLdouble tempXe,
 				    const GLdouble tempYs, const GLdouble tempYe,
@@ -61,17 +87,24 @@ public:
 	//----------------------------------------------------------------------------------
 	//  Get Methods
 	//----------------------------------------------------------------------------------
+	
 	GLdouble GetLR () {return m_x;}
 	GLdouble GetUD () {return m_y;}
 	GLdouble GetFB () {return m_z;}	
+	///Returns max x fo bounding box at tempIndex.
 	GLdouble GetAABBMaxX (const int & tempIndex) {return m_colDetect.GetAABBMaxX (tempIndex);}
+	///Returns min x fo bounding box at tempIndex.
 	GLdouble GetAABBMinX (const int & tempIndex) {return m_colDetect.GetAABBMinX (tempIndex);}
+	///Returns max y fo bounding box at tempIndex.
 	GLdouble GetAABBMaxY (const int & tempIndex) {return m_colDetect.GetAABBMaxY (tempIndex);}
+	///Returns min y fo bounding box at tempIndex.
 	GLdouble GetAABBMinY (const int & tempIndex) {return m_colDetect.GetAABBMinY (tempIndex);}
+	///Returns max z fo bounding box at tempIndex.
 	GLdouble GetAABBMaxZ (const int & tempIndex) {return m_colDetect.GetAABBMaxZ (tempIndex);}
+	///Returns min z fo bounding box at tempIndex.
 	GLdouble GetAABBMinZ (const int & tempIndex) {return m_colDetect.GetAABBMinZ (tempIndex);}
 	
-	// position the camera
+	/// Sets the X, Y, Z postion of camera and its horixontal angle.
 	void Position (GLdouble const & tempX,
 				   GLdouble const & tempY,
 				   GLdouble const & tempZ,
@@ -80,20 +113,24 @@ public:
 	// check whether ok to move
 	void CheckCamera();
 
-	// Used to pass direction to move or rotate  (i.e. 1, -1 or 0)
+	/// Move the camera forward/backward
 	void DirectionFB(int const & tempMove);
+	/// Move the camera sidewards
 	void DirectionLR(int const & tempMove);
+	///Move the camera vertically
 	void DirectionUD(int const & tempMove);
+	///Rotate camera horizontally
 	void DirectionRotateLR(GLdouble const & tempMove);
+	///Rotate camera vertically
 	void DirectionLookUD(int const & tempMove);
 
-	// display map
+	/// display mini map
 	void DisplayMap(const int & screenWidth, const int & screenHeight, 
 		            const GLuint & tempImage);
-	// display welcome screen
+	/// display welcome screen
 	void DisplayWelcomeScreen (const int & screenWidth, const int & screenHeight,
 							   const int & tempExit, const GLuint & tempImage);
-	// display no exit
+	/// display no exit sign
 	void DisplayNoExit (const int & screenWidth, const int & screenHeight, 
 						const GLuint & tempImage);
 	
@@ -139,10 +176,10 @@ private:
 	void RotateLR();
 	void LookUD();
 	
-	// overloaded function for setting plain
+	/// Set plains for caerma to move on (overloaded)
 	void SetPlains(const int & moveX, const int & moveZ);
 
-	// resets camera
+	/// reset camera
 	void ResetXYZ();
 	// display new view
 	void callGLLookAt();
