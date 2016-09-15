@@ -288,8 +288,19 @@ GLdouble rotationSpeed = 0.005;
 #define WALL_INDOOR_2				231
 #define WALL_INDOOR_2_X				232
 
-// 224 Next (up to 250)
+// 234 Next (up to 250)
 
+//Additonal Textures for end of Nexus
+#define END_NEXUS_FLOOR             234
+#define END_NEXUS_STEP_TOP          235
+#define END_NEXUS_STEP_FRONT        236
+#define END_NEXUS_SIDE              237
+#define END_NEXUS_GRASS             238
+#define END_NEXUS_B1                239
+#define END_NEXUS_B2                240
+#define END_NEXUS_B3                241
+#define END_NEXUS_WINDOW            242
+#define END_NEXUS_WINDOW_SIDE       243
 
 //--------------------------------------------------------------------------------------
 
@@ -402,6 +413,11 @@ void DisplayPhysIndoor();
 void DrawPhysSteps();
 void DisplayPhysSteps();
 
+//Extending the area at the bottom of the Nexus stairs
+void DrawNexusBottom();
+void DisplayNexusBottom();
+void DrawNexusSteps();
+void DisplayNexusSteps();
 
 void BindBridgeWall(GLint LR);
 void BindBuildingWall();
@@ -473,7 +489,7 @@ void myinit()
 	// turn collision detection on
 	cam.SetCollisionDetectionOn(true);
 	// set number of bounding boxes required
-	cam.SetNoBoundingBoxes(20);
+	cam.SetNoBoundingBoxes(30);
 	// set starting position of user
 	cam.Position(32000.0, 10450.0,	
 				 42000.0, 90.0);
@@ -512,7 +528,7 @@ void Display()
 		if (DisplayMap) cam.DisplayMap(width, height, tp.GetTexture(MAP));
 		// display no exit sign (position check should really be in an object, but didn't have time)
 		if ((cam.GetLR() > 35500.0) && (cam.GetFB() < 25344.0) ||
-			(cam.GetLR() > 34100.0) && (cam.GetFB() > 41127.0))
+			(cam.GetLR() > 42000.0) && (cam.GetFB() > 41127.0))
 		{
 			cam.DisplayNoExit(width, height,tp.GetTexture(NO_EXIT));
 		}
@@ -773,8 +789,10 @@ void mouseMove(int x, int y)
 //--------------------------------------------------------------------------------------
 // Set up bounding boxes for collsion detection
 //--------------------------------------------------------------------------------------
+
 void CreateBoundingBoxes()
 {
+	
 	// chanc block
 	cam.SetAABBMaxX(0, 35879.0);
 	cam.SetAABBMinX(0, 33808.0);
@@ -834,6 +852,7 @@ void CreateBoundingBoxes()
 	cam.SetAABBMinX(11, 25608.0);
 	cam.SetAABBMaxZ(11, 43046.0);
 	cam.SetAABBMinZ(11, 42754.0);
+	
 
 	// Canteen block
 	cam.SetAABBMaxX(12, 2608.0);
@@ -883,6 +902,22 @@ void CreateBoundingBoxes()
 	cam.SetAABBMaxZ(19, 31000.0);
 	cam.SetAABBMinZ(19, 26752.0);
 
+	//New area end the bottom of Nexus
+	cam.SetAABBMaxX(20, 43000);
+	cam.SetAABBMinX(20, 31000);
+	cam.SetAABBMaxZ(20, 50000);
+	cam.SetAABBMinZ(20, 42900);
+
+	cam.SetAABBMaxX(21, 43000);
+	cam.SetAABBMinX(21, 34500);
+	cam.SetAABBMaxZ(21, 41150);
+	cam.SetAABBMinZ(21, 35000);
+
+	cam.SetAABBMaxX(22, 43000);
+	cam.SetAABBMinX(22, 42800);
+	cam.SetAABBMaxZ(22, 42900);
+	cam.SetAABBMinZ(22, 41150);
+	
 	//Increase SetNoBoundingBoxes() when adding move, located in myinit()
 
 }
@@ -957,6 +992,16 @@ void CreatePlains()
 		cam.SetPlains(FLAT_PLAIN, 36880.0, 37520.0, step, step, stepLength, stepLength + 64.0);
 		step += 64.0;
 		stepLength += 64.0;
+	}
+
+	//End of Nexus bottom steps
+	step = 10450.0-561;
+	stepLength = 38220;
+	for (int i = 0; i < 11; i++)
+	{
+		cam.SetPlains(FLAT_PLAIN, stepLength, stepLength + 256, step, step, 41127, 43057);
+		step -= 96;
+		stepLength += 256;
 	}
 
 	// temp plain to take down to ECL1
@@ -1651,7 +1696,7 @@ void CreateTextures()
 	tp.CreateTexture(217, image, 256, 256);
 	image = tp.LoadTexture("data/welcome.raw", 512, 512);
 	tp.CreateTexture(218, image, 512, 512);
-	image = tp.LoadTexture("data/thanks.raw", 512, 512);
+	image = tp.LoadTexture("images/Exit.raw", 512, 512);
 	tp.CreateTexture(219, image, 512, 512);
 
 	//Additional textures
@@ -1679,6 +1724,28 @@ void CreateTextures()
 	image = tp.LoadTexture("images/IndoorDoor.raw", 704, 384);
 	tp.CreateTexture(DOOR_INDOOR, image, 704, 384);
 
+	//Additional textures for end of Nexus
+	image = tp.LoadTexture("images/EndNexusFloor.raw", 128, 128);
+	tp.CreateTexture(END_NEXUS_FLOOR, image, 128, 128);
+	image = tp.LoadTexture("images/NexusStepsTop.raw", 256, 768);
+	tp.CreateTexture(END_NEXUS_STEP_TOP, image, 256, 768);
+	image = tp.LoadTexture("images/NexusStepsFront.raw", 128, 768);
+	tp.CreateTexture(END_NEXUS_STEP_FRONT, image, 128, 768);
+	image = tp.LoadTexture("images/EndNexusSides.raw", 256, 128);
+	tp.CreateTexture(END_NEXUS_SIDE, image, 256, 128);
+	image = tp.LoadTexture("images/EndNexusGrass.raw", 256, 256);
+	tp.CreateTexture(END_NEXUS_GRASS, image, 256, 256);
+	image = tp.LoadTexture("images/EndNexusBound1.raw", 1800, 480);
+	tp.CreateTexture(END_NEXUS_B1, image, 1800, 480);
+	image = tp.LoadTexture("images/EndNexusBound2.raw", 700, 900);
+	tp.CreateTexture(END_NEXUS_B2, image, 700, 900);
+	image = tp.LoadTexture("images/EndNexusBound3.raw", 700, 900);
+	tp.CreateTexture(END_NEXUS_B3, image, 700, 900);
+	image = tp.LoadTexture("images/NewWindow1.raw", 512, 256);
+	tp.CreateTexture(END_NEXUS_WINDOW, image, 512, 256);
+	image = tp.LoadTexture("images/NewWindow1.raw", 32, 128);
+	tp.CreateTexture(END_NEXUS_WINDOW_SIDE, image, 32, 128);
+
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
@@ -1693,6 +1760,10 @@ void DrawBackdrop()
 	DisplayHelp();
 	DisplayPhysIndoor();
 	DisplayPhysSteps();
+
+	//Nexus
+	DisplayNexusBottom();
+	DisplayNexusSteps();
 
 	DisplayAboveWindowBlock ();
 	DisplayBench ();
@@ -1720,10 +1791,261 @@ void DrawHelp()
 {
 	tp.CreateDisplayList(XY, 508, 128.0, 128.0, 36047.0, 9422.0, 41127.0, 30.0, 11.0);
 }
+
 void DisplayHelp()
 {
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_XY));
 	glCallList(508);
+}
+
+void DrawNexusBottom()
+{
+	//Floors
+	tp.CreateDisplayList(XZ, 541, 256, 256, 35660.0, 9439.0, 41127, 10,8);
+
+	//grass
+	tp.CreateDisplayList(XZ, 548, 1024, 1024, 35660.0, 9439.0, 41127, 9, 3);
+
+	//Wall on North
+	tp.CreateDisplayList(XY, 542, 128.0, 128.0, 35000.0, 9439.0 - 1680, 41126.0, 70.0, 33.0);
+
+	//Wall on South
+	tp.CreateDisplayList(XY, 543, 128.0, 128.0, 35000.0, 9439.0 - 1680, 41126.0, 70.0, 20.0);
+
+	//YZ Wall on South 
+	tp.CreateDisplayList(YZ, 547, 128.0, 128.0, 35000.0, 9439.0 - 1680, 41126.0, 30.0, 20.0);
+
+	//Side front
+	tp.CreateDisplayList(XY, 544, 256.0, 128.0, 35000.0, 9439.0, 41126.0, 35.0, 1);
+
+	//Side up
+	tp.CreateDisplayList(XZ, 545, 256.0, 128.0, 35000.0, 9439.0, 41126.0, 35.0, 1);
+
+	tp.CreateDisplayList(YZ, 546, 128, 128, 35000.0, 9439.0, 41126.0, 1, 1);
+
+	//bound1
+	tp.CreateDisplayList(XY, 549, 9000, 2400, 35500.0, 9439.0, 45800, 1, 1);
+
+	//bound2
+	tp.CreateDisplayList(YZ, 550, 6000, 3400, 43000.0, 6000, 40000, 1, 1);
+
+	//bound3
+	tp.CreateDisplayList(YZ, 551, 2600, 2800, 43000.0, 9439.0, 43400, 1, 1);
+
+
+	//Roof
+	glNewList(552, GL_COMPILE);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(4716.0, 11564.0, 40983.2);
+	glTexCoord2f(80, 0.0);
+	glVertex3f(4716.0 + (128.0 * 80), 11564.0, 40983.2);
+	glTexCoord2f(80, 0);
+	glVertex3f(4716.0 + (128.0 * 80), 11364.0, 41583.2);
+	glTexCoord2f(0, 0);
+	glVertex3f(4716.0, 11364.0, 41583.2);
+	glEnd();
+	glEndList();
+
+	glNewList(553, GL_COMPILE);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(4716.0, 11364.0, 40983.2);
+	glTexCoord2f(14, 0.0);
+	glVertex3f(4716.0 + (128.0 * 14), 11364.0, 40983.2);
+	glTexCoord2f(14, 0);
+	glVertex3f(4716.0 + (128.0 * 14), 11464.0, 41383.2);
+	glTexCoord2f(0, 0);
+	glVertex3f(4716.0, 11464.0, 41383.2);
+	glEnd();
+	glEndList();
+
+	glNewList(554, GL_COMPILE);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(2608.0, 11564.0, 8100.0);
+	glTexCoord2f(0.0, 22);
+	glVertex3f(2608.0, 11564.0, 8100.0 + (128.0 * 22));
+	glTexCoord2f(0.0, 22);
+	glVertex3f(3008, 11364.0, 8100.0 + (128.0 * 22));
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(3008, 11364.0, 8100.0);
+	glEnd();
+	glEndList();
+
+	//Above block
+	tp.CreateDisplayList(XY, 555, 256.0, 256.0, 33808.0, 10832.0, 41127.0, 40, 0.75);
+
+	//window
+	tp.CreateDisplayList(XY, 556, 1024, 600, 33808.0+3000, 10832.0-600, 41127.0+50, 5, 1);
+
+	//window side front
+	tp.CreateDisplayList(YZ, 557, 600, 50, 33808.0 + 3000, 10832.0 - 600, 41127.0, 1, 1);
+
+	//window side bottom
+	tp.CreateDisplayList(XZ, 558, 1024, 50, 33808.0 + 3000, 10832.0 - 600, 41127.0, 5, 1);
+}
+
+void DisplayNexusBottom()
+{
+	step = 10 * 256 + 11 * 256;
+	step2 = 11 * 96;
+	int step3 = 1046;
+
+	//Floors
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_FLOOR));
+	glCallList(541);
+
+	glPushMatrix();
+	glTranslatef(step, -step2, 0.0);
+	glCallList(541);
+	glPopMatrix();
+
+	//grass
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_GRASS));
+	glPushMatrix();
+	glTranslatef(0, 0, 2046);
+	glCallList(548);
+	glPopMatrix();
+
+	//Wall on North
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_XY));
+	glCallList(542);
+	//Wall on South
+	glPushMatrix();
+	glTranslatef(256.0, -step2+362, 2048-128);
+	glCallList(543);
+	glPopMatrix();
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_BRICK_YZ));
+	glPushMatrix();
+	glTranslatef(step3, 256, 2048 - 128);
+	glCallList(547);
+	glPopMatrix();
+	
+	//Side Front
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_SIDE));
+	glPushMatrix();
+	glTranslatef(step3, 128, 2048 - 164);
+	glCallList(544);
+	glPopMatrix();
+
+	//Side Top
+	glPushMatrix();
+	glTranslatef(step3, 256, 2048 - 164);
+	glCallList(545);
+	glPopMatrix();
+
+	//Side Bot
+	glPushMatrix();
+	glTranslatef(step3, 128, 2048 - 164);
+	glCallList(545);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(step3, 128, 2048 - 164);
+	glCallList(546);
+	glPopMatrix();
+
+	//bound1
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_B1));
+	glCallList(549);
+
+	//bound2
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_B2));
+	glCallList(550);
+
+	//bound3
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_B3));
+	glCallList(551);
+
+
+
+	//Roof
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP_LIB));
+	glPushMatrix();
+	glTranslatef(29800,450,0);
+	glCallList(552);
+	glPopMatrix();
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP_LIB));
+	glPushMatrix();
+	glTranslatef(29500, 450, 1846);
+	glCallList(553);
+	glPopMatrix();
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_TOP));
+	glPushMatrix();
+	glTranslatef(33200, 420, 34800);
+	glCallList(554);
+	glPopMatrix();
+
+
+	//above block
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ABOVE_WINDOW_BLOCK_XY_3));
+	glPushMatrix();
+	glTranslatef(2000, 0, 3);
+	glCallList(555);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0, 1000, 3);
+	glCallList(555);
+	glPopMatrix();
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_WINDOW));
+	glCallList(556);
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_WINDOW_SIDE));
+	glCallList(557);
+
+	glPushMatrix();
+	glTranslatef(1024 * 5, 0 , 0);
+	glCallList(557);
+	glPopMatrix();
+
+	glCallList(558);
+}
+
+void DrawNexusSteps()
+{
+	//steps top
+	tp.CreateDisplayList(XZ, 601, 256, 1024, 38220, 9439.0, 41127, 1, 2);
+
+	//steps front
+	tp.CreateDisplayList(YZ, 602, 96, 2048, 38476, 9439.0-96, 41127, 1, 1);
+
+}
+
+void DisplayNexusSteps()
+{
+	//steps top
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_STEP_TOP));
+	step = 0.0;
+	step2 = 0.0;
+	for (int i = 0; i < 11; i++)
+	{
+		glPushMatrix();
+		glTranslatef(step, step2, 0.0);
+		glCallList(601);
+		glPopMatrix();
+		step += 256;
+		step2 += -96;
+	}
+
+	//steps front
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(END_NEXUS_STEP_FRONT));
+	step = 0.0;
+	step2 = 0.0;
+	for (int i = 0; i < 11; i++)
+	{
+		glPushMatrix();
+		glTranslatef(step, step2, 0.0);
+		glCallList(602);
+		glPopMatrix();
+		step += 256;
+		step2 += -96;
+	}
 }
 
 void DrawPhysIndoor()
@@ -4138,7 +4460,7 @@ void DrawEntranceSteps ()
 	}
 
 	// steps next to GCL1
-	tp.CreateDisplayList (XZ, 206, 128.0, 1024.0, 34508.0, 10000.0, 41127, 1.0, 0.942);
+	tp.CreateDisplayList (XZ, 206, 128.0, 1024.0, 34508.0, 10000.00, 41127, 1.0, 0.942);
 	tp.CreateDisplayList (XZ, 207, 256.0, 1024.0, 34352.0, 10000.0, 41127, 0.609, 0.942);
 	tp.CreateDisplayList(YZ, 509, 51.0, 485.0, 34508.0, 10000.0, 41127, 1.0, 4.0);
 	
@@ -5416,6 +5738,9 @@ void CreateTextureList()
 	DrawPhysIndoor(); //511-528, 531-532, 534-538
 	DrawPhysSteps(); //529-530, 533
 
+	DrawNexusBottom();//541
+	DrawNexusSteps();
+
 	DrawGrass ();				// 79, 111, 198, 460-477
 	DrawChancPosts ();			// 11-15, 235-237
 	DrawDoorPosts ();			// 25-27, 199
@@ -5439,8 +5764,6 @@ void CreateTextureList()
 	DrawMapExit ();				// 448-449, 454
 	// 455-459
 }
-
-
 
 
 //--------------------------------------------------------------------------------------
