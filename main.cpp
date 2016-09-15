@@ -399,6 +399,8 @@ void DrawHelp();
 void DisplayHelp();
 void DrawPhysIndoor();
 void DisplayPhysIndoor();
+void DrawPhysSteps();
+void DisplayPhysSteps();
 
 
 void BindBridgeWall(GLint LR);
@@ -1654,6 +1656,7 @@ void DrawBackdrop()
 {
 	DisplayHelp();
 	DisplayPhysIndoor();
+	DisplayPhysSteps();
 
 	DisplayAboveWindowBlock ();
 	DisplayBench ();
@@ -1833,6 +1836,66 @@ void DisplayPhysIndoor()
 		glCallList(522);
 	glPopMatrix();
 }
+
+void DrawPhysSteps()
+{
+	//Step Side
+	tp.CreateDisplayList(XY, 529, 128.0, 64.0, 36880.0, 10000.0, 29312.0, 5.0, 1.0);
+
+	//Step Top
+	tp.CreateDisplayList(XZ, 530, 128.0, 64.0, 36880.0, 10064.0, 29312.0, 5.0, 1.0);
+	//Step Top 2
+	tp.CreateDisplayList(XZ, 533, 128.0, 64.0, 0.0, 0.0, 0.0, 5.0, 1.0);
+}
+
+void DisplayPhysSteps()
+{
+	step = 0;
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_INDOOR_SIDE));
+	for (int i = 0; i < 6; i++)
+	{
+		glPushMatrix();
+			glTranslated(0, step, step);
+			glCallList(529);
+		glPopMatrix();
+		step += 64;
+	}
+	step2 = step + 64;
+	for (int i = 0; i < 7; i++)
+	{
+		glPushMatrix();
+			glTranslated(-704.0, step, step2);
+			glCallList(529);
+		glPopMatrix();
+		step += 64;
+		step2 -= 64;
+	}
+
+	step = 0;
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(STEP_INDOOR));
+	for (int i = 0; i < 6; i++)
+	{
+		glPushMatrix();
+			glTranslated(0, step, step);
+			glCallList(530);
+		glPopMatrix();
+		step += 64;
+	}
+	step2 = step + 29376.0;
+	step += 10064.0;
+	for (int i = 0; i < 7; i++)
+	{
+		glPushMatrix();
+			glTranslated(36816.0, step, step2);
+			glRotatef(180.0, 0.0f, 1.0f, 0.0f);
+			glCallList(533);
+		glPopMatrix();
+		step += 64;
+		step2 -= 64;
+	}
+}
+
 // --------------------------------------------------------------------------------------
 // Display grass and slopes
 // --------------------------------------------------------------------------------------
@@ -5308,6 +5371,7 @@ void CreateTextureList()
 {
 	DrawHelp();
 	DrawPhysIndoor();
+	DrawPhysSteps();
 
 	DrawGrass ();				// 79, 111, 198, 460-477
 	DrawChancPosts ();			// 11-15, 235-237
