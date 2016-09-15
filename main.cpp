@@ -397,6 +397,8 @@ void DrawECL ();
 
 void DrawHelp();
 void DisplayHelp();
+void DrawPhysIndoor();
+void DisplayPhysIndoor();
 
 
 void BindBridgeWall(GLint LR);
@@ -788,12 +790,6 @@ void CreateBoundingBoxes()
 	cam.SetAABBMinX(2, 33808.0);
 	cam.SetAABBMaxZ(2, 26752.0);
 	cam.SetAABBMinZ(2, 25344.0);
-
-	// phy sci block 1st doorway
-	cam.SetAABBMaxX(3, 35879.0);
-	cam.SetAABBMinX(3, 34256.0);
-	cam.SetAABBMaxZ(3, 27559.0);
-	cam.SetAABBMinZ(3, 26752.0);
 
 	// phy sci block 2nd panel
 	cam.SetAABBMaxX(4, 35879.0);
@@ -1642,7 +1638,7 @@ void CreateTextures()
 	
 
 	//Additional window (large) textures
-	image = tp.LoadTexture("images/IndoorDoor.raw", 704, 384);//, 384, 704);
+	image = tp.LoadTexture("images/IndoorDoor.raw", 704, 384);
 	tp.CreateTexture(DOOR_INDOOR, image, 704, 384);
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
@@ -1657,6 +1653,7 @@ void CreateTextures()
 void DrawBackdrop()
 {
 	DisplayHelp();
+	DisplayPhysIndoor();
 
 	DisplayAboveWindowBlock ();
 	DisplayBench ();
@@ -1690,6 +1687,107 @@ void DisplayHelp()
 	glCallList(508);
 }
 
+void DrawPhysIndoor()
+{
+	// Wooden Doorway
+	tp.CreateYtoZWindowList(528, 37520.0, 10000.0, 704.0, 28800.0, 384.0, 1.0, 1.0);
+
+	//North Wall Entry
+	tp.CreateDisplayList(XY, 511, 64.0, 64.0, 34320.0, 10064.0, 26752.0, 50.0, 12.0);
+	tp.CreateDisplayList(XY, 512, 64.0, 64.0, 34320.0, 10000.0, 26752.0, 50.0, 1.0);
+
+	//South Wall Entry
+	tp.CreateDisplayList(XY, 513, 64.0, 64.0, 34320.0, 10064.0, 27303.0, 30.0, 12.0);
+	tp.CreateDisplayList(XY, 514, 64.0, 64.0, 34320.0, 10000.0, 27303.0, 30.0, 1.0);
+
+	//Entry Floor
+	tp.CreateDisplayList(XZ, 515, 64.0, 64.0, 34383.0, 10000.0, 26752.0, 29.64, 8.61);
+
+	//Entry Roof
+	tp.CreateDisplayList(XZ, 516, 64.0, 64.0, 34344.0, 10832.0, 26752.0, 29.64, 8.61);
+
+
+
+	//Main Floor
+	tp.CreateDisplayList(XZ, 517, 64.0, 64.0, 36240.0, 10000.0, 26752.0, 20.0, 40.0);
+
+	//Main Roof
+	tp.CreateDisplayList(XZ, 520, 64.0, 64.0, 36240.0, 10832.0, 26752.0, 20.0, 40.0);
+
+	//Main Wall East 1
+	tp.CreateDisplayList(YZ, 518, 64.0, 64.0, 37520.0, 10064.0, 26752.0, 12.0, 32.0);
+	tp.CreateDisplayList(YZ_FLIP, 519, 64.0, 64.0, 0.0, 0.0, 0.0, 32.0, 1.0);
+
+	//Main Wall East 2
+	tp.CreateDisplayList(YZ, 523, 64.0, 64.0, 37520.0, 10064.0, 29184.0, 12.0, 2.0);
+	tp.CreateDisplayList(YZ_FLIP, 524, 64.0, 64.0, 0.0, 0.0, 0.0, 2.0, 1.0);
+
+	//Main Wall East top of door
+	tp.CreateDisplayList(YZ, 525, 64.0, 64.0, 37520.0, 10704.0, 28800.0, 2.0, 6.0);
+
+	//Main Wall West
+	tp.CreateDisplayList(YZ, 521, 64.0, 64.0, 36240.0, 10064.0, 27303.0, 12.0, 31.4);
+	tp.CreateDisplayList(YZ_FLIP, 522, 64.0, 64.0, 0.0, 0.0, 0.0, 31.4, 1.0);
+
+	//Main Wall South
+	tp.CreateDisplayList(XY, 526, 64.0, 64.0, 36240.0, 10064.0, 29312.0, 10.0, 12.0);
+	tp.CreateDisplayList(XY, 527, 64.0, 64.0, 36240.0, 10000.0, 29312.0, 10.0, 1.0);
+}
+
+void DisplayPhysIndoor()
+{
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(DOOR_INDOOR));
+	glCallList(528);
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_INDOOR_2));
+	//Entry Walls
+	glCallList(511);
+	glCallList(513);
+	//Main South
+	glCallList(526);
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WALL_INDOOR_2_X));
+	//Main Walls
+	glCallList(518); //East 1
+	glCallList(523); //East 2
+	glCallList(525); //East top of door
+	glCallList(521); //West
+	
+
+
+
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(FLOOR_INDOOR_1));
+	glCallList(515); //Entry
+	glCallList(517); //Main
+
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(ROOF_INDOOR));
+	glCallList(516); //Entry
+	glCallList(520); //Main
+	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(FLOOR_SKIRT));
+	//Entry Walls 
+	glCallList(512);
+	glCallList(514);
+	//Main Walls
+	glCallList(527);
+	glPushMatrix();
+		glTranslated(37520.0, 10064.0, 26752.0);
+		glRotatef(90.0, 1.0f, 0.0f, 0.0f);
+		glCallList(519);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(37520.0, 10064.0, 29184.0);
+	glRotatef(90.0, 1.0f, 0.0f, 0.0f);
+	glCallList(524);
+	glPopMatrix();
+
+	glPushMatrix();
+		glTranslated(36240.0, 10064.0, 27303.0);
+		glRotatef(90.0, 1.0f, 0.0f, 0.0f);
+		glCallList(522);
+	glPopMatrix();
+}
 // --------------------------------------------------------------------------------------
 // Display grass and slopes
 // --------------------------------------------------------------------------------------
@@ -4650,8 +4748,9 @@ void DisplayLargerTextures ()
 	glCallList(372);
 
 	// Phys sci door 1
-	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_13));
-	glCallList(373);
+	//glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_13));
+	//glCallList(373);
+
 	// Phys sci toilets
 	glBindTexture(GL_TEXTURE_2D, tp.GetTexture(WINDOW_14));
 	glCallList(374);
@@ -4831,7 +4930,8 @@ void DrawLargerTextures ()
 	tp.CreateXtoYWindowList (371, 25016.0, 35163.0, 255.0, 10000.0, 586.2, 0.867, 1.0);		// Coffee Machine
 	tp.CreateXtoYWindowList (372, 25016.0, 34778.0, 350.0, 10000.0, 593.22, 0.59, 1.0);		// Sweet Machine
 	// phys sci door 1
-	tp.CreateYtoZWindowList (373, 34320.0, 10000.0, 832.0, 26752.0, 552.0, 1.0, 0.66);		// 256x169.85
+	//tp.CreateYtoZWindowList (373, 34320.0, 10000.0, 832.0, 26752.0, 552.0, 1.0, 0.66);		// 256x169.85
+
 	// phys sci toilets
 	tp.CreateYtoZWindowList (374, 33872.0, 10000.0, 768.0, 28646.0, 322.0, 1.0, 0.833);		// 256x106.67 toilet doors
 	// phys sci door 2
@@ -5175,6 +5275,7 @@ void DrawMapExit ()
 void CreateTextureList()
 {
 	DrawHelp();
+	DrawPhysIndoor();
 
 	DrawGrass ();				// 79, 111, 198, 460-477
 	DrawChancPosts ();			// 11-15, 235-237
@@ -5191,7 +5292,7 @@ void CreateTextureList()
 	DrawRoof();					// 1-10, 97-100, 170-179, 202-205, 214-222, 250-257, 296-299, 426-427
 	DrawEntranceSteps ();		// 258-295, 206-207
 	DrawExtras ();				// 300-349, 388, 395, 419-421, 429, 435
-	DrawLargerTextures ();		// 350-375, 379-387, 389, 414-418, 422-423, 450-453
+	DrawLargerTextures ();		// 350-375, 379-387, 389, 414-418, 422-423, 450-453 (373 unused)
 	DrawLights ();				// 376-378
 	DrawBench ();				// 400-413
 	DrawStepBricks ();			// 478-507
