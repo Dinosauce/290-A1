@@ -275,8 +275,18 @@ GLdouble rotationSpeed = 0.005;
 #define WELCOME						218
 #define EXIT						219
 #define NO_EXIT						222
+
 //Additional Textures
 #define NEX_STEP_SIDE				223
+#define WALL_INDOOR_1				224
+#define FLOOR_INDOOR_1				225
+#define FLOOR_SKIRT					226
+#define ROOF_INDOOR					227
+#define DOOR_INDOOR					228
+#define STEP_INDOOR					229
+#define STEP_INDOOR_SIDE			230
+#define WALL_INDOOR_2				231
+#define WALL_INDOOR_2_X				232
 
 // 224 Next (up to 250)
 
@@ -1611,11 +1621,29 @@ void CreateTextures()
 	tp.CreateTexture(219, image, 512, 512);
 
 	//Additional textures
-	image = tp.LoadTexture("images/SideStep.raw", 51, 485);
+	image = tp.LoadTexture("images/NexusSideStep.raw", 51, 485);
 	tp.CreateTexture(NEX_STEP_SIDE, image, 51, 485);
+	image = tp.LoadTexture("images/IndoorWall.raw", 64, 64);
+	tp.CreateTexture(WALL_INDOOR_1, image, 64, 64);
+	image = tp.LoadTexture("images/IndoorFloor.raw", 64, 64);
+	tp.CreateTexture(FLOOR_INDOOR_1, image, 64, 64);
+	image = tp.LoadTexture("images/IndoorFloorSkirt.raw", 64, 64);
+	tp.CreateTexture(FLOOR_SKIRT, image, 64, 64);
+	image = tp.LoadTexture("images/IndoorRoof.raw", 64, 64);
+	tp.CreateTexture(ROOF_INDOOR, image, 64, 64);
+	image = tp.LoadTexture("images/StepTop.raw", 128, 64);
+	tp.CreateTexture(STEP_INDOOR, image, 128, 64);
+	image = tp.LoadTexture("images/StepSide.raw", 128, 64);
+	tp.CreateTexture(STEP_INDOOR_SIDE, image, 128, 64);
+	image = tp.LoadTexture("images/IndoorBrick.raw", 64, 64);
+	tp.CreateTexture(WALL_INDOOR_2, image, 64, 64);
+	image = tp.LoadTexture("images/IndoorBrickX.raw", 64, 64);
+	tp.CreateTexture(WALL_INDOOR_2_X, image, 64, 64);
+	
 
 	//Additional window (large) textures
-	//none
+	image = tp.LoadTexture("images/IndoorDoor.raw", 704, 384);//, 384, 704);
+	tp.CreateTexture(DOOR_INDOOR, image, 704, 384);
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
