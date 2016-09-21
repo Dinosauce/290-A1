@@ -6,7 +6,7 @@
 //#include <windows.h> // only used if mouse is required (not portable)
 #include "camera.h"
 #include "texturedPolygons.h"
-
+//Chengyu 
 //--------------------------------------------------------------------------------------
 
 #define PI 3.1415962654
