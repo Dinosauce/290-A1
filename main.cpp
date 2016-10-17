@@ -444,7 +444,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(800,500);
-	glutCreateWindow("Murdoch University Campus Tour");
+	glutCreateWindow("Murdoch Runner");
 
 	myinit();
 
@@ -1748,8 +1748,6 @@ void CreateTextures()
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-	
 }
 
 //--------------------------------------------------------------------------------------
