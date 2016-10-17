@@ -6,6 +6,7 @@
 //#include <windows.h> // only used if mouse is required (not portable)
 #include "camera.h"
 #include "texturedPolygons.h"
+#include "Checkpoint.h"
 
 //--------------------------------------------------------------------------------------
 
@@ -1745,6 +1746,8 @@ void CreateTextures()
 	tp.CreateTexture(END_NEXUS_WINDOW, image, 512, 256);
 	image = tp.LoadTexture("images/NewWindow1.raw", 32, 128);
 	tp.CreateTexture(END_NEXUS_WINDOW_SIDE, image, 32, 128);
+
+	Checkpoint::createTextures();
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -5761,6 +5764,8 @@ void CreateTextureList()
 	DrawCylinders ();			// 437-441
 	DrawMapExit ();				// 448-449, 454
 	// 455-459
+
+	Checkpoint::draw();
 }
 
 
