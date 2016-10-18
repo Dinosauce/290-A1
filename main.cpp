@@ -6,7 +6,9 @@
 //#include <windows.h> // only used if mouse is required (not portable)
 #include "camera.h"
 #include "texturedPolygons.h"
-#include "Checkpoint.h"
+#include "CheckpointList.h"
+#include "TextDisplay.h"
+#include <string>
 
 //--------------------------------------------------------------------------------------
 
@@ -338,6 +340,12 @@ unsigned char* image = NULL;
 // objects
 Camera cam;
 TexturedPolygons tp;
+TextDisplay textDisp = TextDisplay();
+
+//Checkpoints
+const int CHECKPOINT_COUNT = 8;
+CheckpointList checkpoints = CheckpointList(CHECKPOINT_COUNT);
+void setCheckpoints();
 
 // initializes setting
 void myinit();
@@ -460,8 +468,8 @@ int main(int argc, char **argv)
 	glutMouseFunc(Mouse);
 	
 	// ONLY USE IF REQUIRE MOUSE MOVEMENT
-	glutPassiveMotionFunc(mouseMove);
-	ShowCursor(FALSE);
+	//glutPassiveMotionFunc(mouseMove);
+	//ShowCursor(false);
 
 	glutReshapeFunc(reshape);
 	glutMainLoop();
@@ -475,6 +483,7 @@ void myinit()
 {
 	// set background (sky colour)
 	glClearColor(97.0/255.0, 140.0/255.0, 185.0/255.0, 1.0);
+	
 	
 	// set perpsective
 	gluLookAt(0.0, 1.75, 0.0, 
@@ -505,6 +514,8 @@ void myinit()
 	// load texture images and create display lists
 	CreateTextureList();
 	CreateTextures();
+
+	setCheckpoints();
 }
 
 //--------------------------------------------------------------------------------------
@@ -539,12 +550,22 @@ void Display()
 		cam.SetRotateSpeed (angleIncrement);
 		// display images
 		DrawBackdrop();
+		checkpoints.callDisplay();
+		
+		textDisp.printToScreen(std::to_string(checkpoints.getNoPassed()), height, width, 0, 0);
+		textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
+		textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
+		textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+		
+		
 	glPopMatrix();
 	glDisable (GL_TEXTURE_2D); 
 
 	// clear buffers
 	glFlush();
 	glutSwapBuffers();
+
+	checkpoints.checkPassed(cam.GetXPos(), cam.GetZPos());
 }
 
 //--------------------------------------------------------------------------------------
@@ -1019,6 +1040,21 @@ void DeleteImageFromMemory(unsigned char* tempImage)
 	{
 		delete [] tempImage;
 	}
+}
+
+//Checkpoints
+void setCheckpoints()
+{
+	checkpoints.Set(0, 34000, 10000, 42000);
+	checkpoints.Set(1, 41500,  8400, 42000);
+	checkpoints.Set(2, 32000, 10000, 33000);
+	checkpoints.Set(3, 33900, 10000, 23600);
+	checkpoints.Set(4, 28000, 10000, 17000);
+	checkpoints.Set(5, 33000,  9500,  8000);
+	checkpoints.Set(6, 27000, 10000, 40000);
+	checkpoints.Set(7, 20000, 10000, 42000);
+	
+	//to add more increase checkpoints length (~line: 346)
 }
 
 //--------------------------------------------------------------------------------------

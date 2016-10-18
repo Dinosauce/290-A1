@@ -60,11 +60,11 @@ void Checkpoint::createTextures()
 	tp.CreateTexture(1, tp.LoadTexture("images/FlagPole.raw", 16, 16), 16, 16);
 	tp.CreateTexture(2, tp.LoadTexture("images/FlagPoleX.raw", 16, 16), 16, 16);
 
-	tp.CreateTexture(3, tp.LoadTexture("images/FlagOrg.raw", 384, 94), 384, 94);
-	tp.CreateTexture(5, tp.LoadTexture("images/FlagOrgX.raw", 94, 384), 94, 384);
+	tp.CreateTexture(3, tp.LoadTexture("images/Flag.raw", 384, 94), 384, 94);
+	tp.CreateTexture(5, tp.LoadTexture("images/FlagX.raw", 94, 384), 94, 384);
 
-	tp.CreateTexture(4, tp.LoadTexture("images/FlagGrey.raw", 384, 94), 384, 94);
-	tp.CreateTexture(6, tp.LoadTexture("images/FlagGreyX.raw", 94, 384), 94, 384);
+	tp.CreateTexture(4, tp.LoadTexture("images/FlagPassed.raw", 384, 94), 384, 94);
+	tp.CreateTexture(6, tp.LoadTexture("images/FlagPassedX.raw", 94, 384), 94, 384);
 }
 
 void Checkpoint::draw()

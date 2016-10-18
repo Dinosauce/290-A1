@@ -1,5 +1,5 @@
 // Checkpoint.h
-// Header for chackpoint class
+// Header for checkpoint class
 // 
 // Jayden Grant - 2016
 
@@ -63,4 +63,4 @@ private:
 
 };
 
-#endif CHECKPOINT_H
+#endif
