@@ -9,6 +9,7 @@
 #include "Checkpoint.h"
 #include <cmath>
 
+/// CheckpointList: Handles a list of checkpoints
 class CheckpointList
 {
 public:

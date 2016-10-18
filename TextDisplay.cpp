@@ -6,6 +6,7 @@
 
 void TextDisplay::printToScreen(std::string text, int screenHeight, int screenWidth, int posV, int posH)
 {
+	//Change to 2D view model
 	glPushMatrix();
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
@@ -18,14 +19,17 @@ void TextDisplay::printToScreen(std::string text, int screenHeight, int screenWi
 			glBindTexture(GL_TEXTURE_2D, 0); //Unbind texture to give text color
 			glColor3d(0.2, 1.0, 0.5);
 
+			//Position Text
 			glTranslatef(-posH, -posV, 0);
 			
+			//Set Bottom Right Raster Position
 			glRasterPos2d(0, 0);
 			for (char & c : text)
 			{
 				glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
 			}
 
+			//Set view model back
 			glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
 		glMatrixMode(GL_MODELVIEW);

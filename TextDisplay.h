@@ -11,11 +11,12 @@
 #include <GL/glut.h>
 #include <string>
 
+/// TextDisplay: Used to display bitmap text to the window.
 class TextDisplay
 {
 public:
-	
-	void printToScreen(std::string text, int screenHeight, int screenWidth, int posH, int posW);
+	///Prints the given text to the display at the given screen position posV / posH (Vert / Horz)
+	void printToScreen(std::string text, int screenHeight, int screenWidth, int posV, int posH);
 };
 
 #endif
