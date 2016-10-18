@@ -460,8 +460,8 @@ int main(int argc, char **argv)
 	glutMouseFunc(Mouse);
 	
 	// ONLY USE IF REQUIRE MOUSE MOVEMENT
-	//glutPassiveMotionFunc(mouseMove);
-	//ShowCursor(FALSE);
+	glutPassiveMotionFunc(mouseMove);
+	ShowCursor(FALSE);
 
 	glutReshapeFunc(reshape);
 	glutMainLoop();
