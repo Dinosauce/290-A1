@@ -15,7 +15,9 @@ class Checkpoint
 
 public:
 
+	/// Default constructor: Sets default coordinate values.
 	Checkpoint();
+	/// Constructor: Sets given coordinate values.
 	Checkpoint(GLdouble x, GLdouble y, GLdouble z);
 
 	/// Sets the x, y and z coordinates of the Checkpoint as GLdoubles.
