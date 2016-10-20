@@ -24,9 +24,9 @@ void TextDisplay::printToScreen(std::string text, int screenHeight, int screenWi
 			
 			//Set Bottom Right Raster Position
 			glRasterPos2d(0, 0);
-			for (char & c : text)
+			for (int i = 0; i < text.length(); i++)
 			{
-				glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+				glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]);
 			}
 
 			//Set view model back
