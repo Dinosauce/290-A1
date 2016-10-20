@@ -59,7 +59,7 @@ private:
 
 	static TexturedPolygons tp;
 
-	bool passed = false;
+	bool passed;
 
 };
 

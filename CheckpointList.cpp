@@ -7,11 +7,13 @@
 
 CheckpointList::CheckpointList()
 {
+	noPassed = 0;
 	length = 0;
 }
 
 CheckpointList::CheckpointList(int newLength)
 {
+	noPassed = 0;
 	SetLength(newLength);
 }
 

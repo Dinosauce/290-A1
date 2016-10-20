@@ -11,11 +11,13 @@ TexturedPolygons Checkpoint::tp;
 
 Checkpoint::Checkpoint()
 {
+	passed = false;
 	setPosition(0, 0, 0);
 }
 
 Checkpoint::Checkpoint(GLdouble x, GLdouble y, GLdouble z)
 {
+	passed = false;
 	setPosition(x, y, z);
 }
 

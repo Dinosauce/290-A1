@@ -45,10 +45,10 @@ private:
 	/// Pointer to start of Checkpoint array
 	Checkpoint * checkpoints;
 	/// length of array
-	int length = 0;
+	int length;
 
 	/// the number of checkpoints currently passed.
-	int noPassed = 0;
+	int noPassed;
 
 };
 
