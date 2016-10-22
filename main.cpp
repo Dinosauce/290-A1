@@ -446,6 +446,9 @@ void CreatePlains();
 // deletes image and clears memory
 void DeleteImageFromMemory(unsigned char* tempImage);
 
+// additional funcs : HUD
+void displayHUD();
+
 //--------------------------------------------------------------------------------------
 //  Main function 
 //--------------------------------------------------------------------------------------
@@ -554,11 +557,7 @@ void Display()
 		DrawBackdrop();
 		checkpoints.callDisplay();
 		
-		textDisp.printToScreen(std::to_string(checkpoints.getNoPassed()), height, width, 0, 0);
-		textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
-		textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
-		textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
-		textDisp.printToScreen(score.getTimeString(), height, width, height - 24, 6);
+		displayHUD();
 		
 		
 	glPopMatrix();
@@ -589,6 +588,22 @@ void reshape(int w, int h)
 	glViewport(0, 0, w, h);
 	gluPerspective(45,ratio,1,250000);	
 	glMatrixMode(GL_MODELVIEW);
+}
+
+// Additional Funcs
+void displayHUD()
+{
+	glColor3d(0.2, 0.2, 0.75);
+	textDisp.printToScreen(std::to_string(checkpoints.getNoPassed()), height, width, 0, 0);
+
+	//Display coordinates: To asist flag / potion placement (Cam is ~450 higher than plane)
+	glColor3d(0.2, 1.0, 0.25);
+	textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
+	textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
+	textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+
+	glColor3d(1.0, 0.2, 0.2);
+	textDisp.printToScreen(score.getTimeString(), height, width, height - 24, 6);
 }
 
 //--------------------------------------------------------------------------------------

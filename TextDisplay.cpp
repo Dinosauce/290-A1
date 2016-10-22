@@ -17,7 +17,7 @@ void TextDisplay::printToScreen(std::string text, int screenHeight, int screenWi
 			glLoadIdentity();
 
 			glBindTexture(GL_TEXTURE_2D, 0); //Unbind texture to give text color
-			glColor3d(0.2, 1.0, 0.5);
+			//glColor3d(0.2, 1.0, 0.5);
 
 			//Position Text
 			glTranslatef(posH, -posV, 0);
