@@ -8,6 +8,7 @@
 #include "texturedPolygons.h"
 #include "CheckpointList.h"
 #include "TextDisplay.h"
+#include "Score.h"
 #include <string>
 
 //--------------------------------------------------------------------------------------
@@ -341,6 +342,7 @@ unsigned char* image = NULL;
 Camera cam;
 TexturedPolygons tp;
 TextDisplay textDisp = TextDisplay();
+Score score = Score();
 
 //Checkpoints
 const int CHECKPOINT_COUNT = 8;
@@ -556,6 +558,7 @@ void Display()
 		textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
 		textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
 		textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+		textDisp.printToScreen(score.getTimeString(), height, width, height - 24, 6);
 		
 		
 	glPopMatrix();
@@ -564,8 +567,10 @@ void Display()
 	// clear buffers
 	glFlush();
 	glutSwapBuffers();
-
-	checkpoints.checkPassed(cam.GetXPos(), cam.GetZPos());
+	if (checkpoints.checkPassed(cam.GetXPos(), cam.GetZPos()))
+	{
+		score.start();
+	}
 }
 
 //--------------------------------------------------------------------------------------

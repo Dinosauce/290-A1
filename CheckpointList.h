@@ -28,7 +28,7 @@ public:
 	void callDisplay();
 
 	/// Compares given position to checkpoints and sets checkpoints as passed if in range.
-	void checkPassed(GLdouble x, GLdouble z);
+	int checkPassed(GLdouble x, GLdouble z);
 
 	/// Returns the number of checkpoints which the player has already passed.
 	int getNoPassed() { return noPassed; };

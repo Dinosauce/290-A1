@@ -50,8 +50,9 @@ void CheckpointList::callDisplay()
 	}
 }
 
-void CheckpointList::checkPassed(GLdouble x, GLdouble z)
+int CheckpointList::checkPassed(GLdouble x, GLdouble z)
 {
+	int passed = 0;
 	int cx, cz;
 	for (int i = 0; i < length; i++)
 	{
@@ -64,9 +65,12 @@ void CheckpointList::checkPassed(GLdouble x, GLdouble z)
 			{
 				checkpoints[i].setPassed(true);
 				noPassed++;
+				passed++;
 			}
 		}
 	}
+
+	return passed;
 }
 
 GLdouble CheckpointList::getDistance(GLdouble x1, GLdouble z1, GLdouble x2, GLdouble z2)

@@ -20,7 +20,7 @@ void TextDisplay::printToScreen(std::string text, int screenHeight, int screenWi
 			glColor3d(0.2, 1.0, 0.5);
 
 			//Position Text
-			glTranslatef(-posH, -posV, 0);
+			glTranslatef(posH, -posV, 0);
 			
 			//Set Bottom Right Raster Position
 			glRasterPos2d(0, 0);
