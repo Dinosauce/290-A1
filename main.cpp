@@ -11,6 +11,8 @@
 #include "Score.h"
 #include <string>
 
+#include "Potion.h"
+
 //--------------------------------------------------------------------------------------
 
 #define PI 3.1415962654
@@ -1804,6 +1806,7 @@ void CreateTextures()
 	tp.CreateTexture(END_NEXUS_WINDOW_SIDE, image, 32, 128);
 
 	Checkpoint::createTextures();
+	Potion::createTextures();
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -5821,7 +5824,8 @@ void CreateTextureList()
 	DrawMapExit ();				// 448-449, 454
 	// 455-459
 
-	Checkpoint::draw();
+	Checkpoint::draw(880);
+	Potion::draw(890);
 }
 
 

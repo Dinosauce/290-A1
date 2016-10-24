@@ -47,8 +47,8 @@ public:
 
 	/// Loads the textures needed for the Checkpoint
 	static void createTextures();
-	/// Creates display lists
-	static void draw();
+	/// Creates display lists, using the given dist number and the next 3 numbers.
+	static void draw(int dispListNo4);
 	
 
 
@@ -58,6 +58,7 @@ private:
 	GLdouble m_zPos;
 
 	static TexturedPolygons tp;
+	static int dispListNo;
 
 	bool passed;
 
