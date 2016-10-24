@@ -1106,18 +1106,32 @@ void DeleteImageFromMemory(unsigned char* tempImage)
 	}
 }
 
+int getRandom(int random)
+{
+	int getR = rand()%100;
+	return getR;
+}
+
 //Checkpoints
 void setCheckpoints()
 {
-	checkpoints.Set(0, 34000, 10000, 42000);
-	checkpoints.Set(1, 41500,  8400, 42000);
-	checkpoints.Set(2, 32000, 10000, 33000);
-	checkpoints.Set(3, 33900, 10000, 23600);
-	checkpoints.Set(4, 28000, 10000, 17000);
-	checkpoints.Set(5, 33000,  9500,  8000);
-	checkpoints.Set(6, 27000, 10000, 40000);
-	checkpoints.Set(7, 20000, 10000, 42000);
-	
+	GLdouble Position [16][3] = {{34000, 10000, 42000},{1500,  8400, 42000},{32000, 10000, 33000},{33900, 10000, 23600},{8000, 10000, 17000},{33000,  9500,  8000},
+	{27000, 10000, 40000},{20000, 10000, 42000},{32700, 10000, 15220},{21046, 10350, 27527},{8245, 10000, 42220},{23090, 10000, 40200},{29180, 10000, 26250},
+	{20060, 10000, 16970},{27300, 10000, 31740},{8310, 10154, 37512}};
+
+	int maxLines = 7;
+	int getR = 0;
+
+	for(int i = 0; i <= maxLines; i++)//Randomly get each set selecting from Position 1-7 and 8-16 respectively.
+	{
+		getR = getRandom(getR);
+		if(getR <= 50)
+		{
+			checkpoints.Set(i, Position[i][0],Position[i][1],Position[i][2]);
+		}
+		else
+			checkpoints.Set(i, Position[i+7][0],Position[i+7][1],Position[i+7][2]);
+	}
 	//to add more increase checkpoints length (~line: 346)
 }
 
