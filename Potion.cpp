@@ -48,6 +48,11 @@ GLdouble Potion::getZ()
 	return m_zPos;
 }
 
+int Potion::getType()
+{
+	return type;
+}
+
 
 // ------------------------------------- Load / Create Assests -------------------------------------
 void Potion::createTextures()
@@ -82,33 +87,33 @@ void Potion::display()
 {
 	glBindTexture(GL_TEXTURE_2D, texpol.GetTexture(type));//Pot
 	glPushMatrix();
-		glTranslated(m_xPos, m_yPos + 100, m_zPos);
+		glTranslated(m_xPos, m_yPos + 20, m_zPos);
 		glCallList(dispListNo);
 	glPopMatrix();
 	glPushMatrix();
-		glTranslated(m_xPos, m_yPos + 100, m_zPos + 64);
+		glTranslated(m_xPos, m_yPos + 20, m_zPos + 64);
 		glCallList(dispListNo);
 	glPopMatrix();
 
 	glBindTexture(GL_TEXTURE_2D, texpol.GetTexture(type + 3));//Pot X
 	glPushMatrix();
-		glTranslated(m_xPos, m_yPos + 100, m_zPos);
+		glTranslated(m_xPos, m_yPos + 20, m_zPos);
 		glCallList(dispListNo + 1);
 	glPopMatrix();
 	glPushMatrix();
-		glTranslated(m_xPos + 64, m_yPos + 100, m_zPos);
+		glTranslated(m_xPos + 64, m_yPos + 20, m_zPos);
 		glCallList(dispListNo + 1);
 	glPopMatrix();
 	glBindTexture(GL_TEXTURE_2D, texpol.GetTexture(type + 6));//Pot Top
 	glPushMatrix();
-	glTranslated(m_xPos, m_yPos + 194, m_zPos);
+	glTranslated(m_xPos, m_yPos + 114, m_zPos);
 	glCallList(dispListNo + 2);
 	glPopMatrix();
 
 
 	glBindTexture(GL_TEXTURE_2D, texpol.GetTexture(0));//Bottom
 	glPushMatrix();
-	glTranslated(m_xPos, m_yPos + 100, m_zPos);
+	glTranslated(m_xPos, m_yPos + 20, m_zPos);
 	glCallList(dispListNo + 2);
 	glPopMatrix();
 }

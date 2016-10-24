@@ -33,8 +33,12 @@ public:
 	/// Adds to the current score multiplier
 	void multiply(int multi);
 
+	/// Returns the final score or -1 if not finished.
+	int Score::getFinalScore();
+
 	/// Returns the time as a formated string
 	std::string getTimeString();
+
 
 private:
 	int finalScore;

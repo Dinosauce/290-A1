@@ -7,11 +7,12 @@
 #include "camera.h"
 #include "texturedPolygons.h"
 #include "CheckpointList.h"
+#include "PotionList.h"
 #include "TextDisplay.h"
 #include "Score.h"
 #include <string>
 
-#include "Potion.h"
+
 
 //--------------------------------------------------------------------------------------
 
@@ -351,6 +352,11 @@ const int CHECKPOINT_COUNT = 8;
 CheckpointList checkpoints = CheckpointList(CHECKPOINT_COUNT);
 void setCheckpoints();
 
+PotionList potions = PotionList();
+void addPotions();
+
+int moveMult = 100;
+
 // initializes setting
 void myinit();
 
@@ -450,6 +456,10 @@ void DeleteImageFromMemory(unsigned char* tempImage);
 
 // additional funcs : HUD
 void displayHUD();
+void displayHUDShadow();
+
+// -------------------------------------------------------------------------------------
+
 
 //--------------------------------------------------------------------------------------
 //  Main function 
@@ -523,6 +533,7 @@ void myinit()
 	CreateTextures();
 
 	setCheckpoints();
+	addPotions();
 }
 
 //--------------------------------------------------------------------------------------
@@ -558,8 +569,12 @@ void Display()
 		// display images
 		DrawBackdrop();
 		checkpoints.callDisplay();
+		potions.callDisplay();
 		
+		glColor3d(1.0, 1.0, 1.0);
 		displayHUD();
+		glColor3d(0.0, 0.0, 0.0);
+		displayHUDShadow();
 		
 		
 	glPopMatrix();
@@ -571,6 +586,18 @@ void Display()
 	if (checkpoints.checkPassed(cam.GetXPos(), cam.GetZPos()))
 	{
 		score.start();
+	}
+
+	switch (potions.checkCollected(cam.GetXPos(), cam.GetZPos()))
+	{
+	case POTION_SLOW: moveMult -= 10;
+		break;
+	case POTION_SPEED:moveMult += 20;
+		break;
+	case POTION_TOTEM: score.multiply();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -595,17 +622,32 @@ void reshape(int w, int h)
 // Additional Funcs
 void displayHUD()
 {
-	glColor3d(0.2, 0.2, 0.75);
-	textDisp.printToScreen(std::to_string(checkpoints.getNoPassed()), height, width, 0, 0);
+	// Number of checkpoints passed
+	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6, width - 106);
+
+	// Current time
+	textDisp.printToScreen("Time: " + score.getTimeString(), height, width, 6, 6);
+
+	// Current speed
+	textDisp.printToScreen("Speed: " + std::to_string(moveMult), height, width,6, (width / 2) - 55);
 
 	//Display coordinates: To asist flag / potion placement (Cam is ~450 higher than plane)
 	glColor3d(0.2, 1.0, 0.25);
 	textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
 	textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
 	textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+}
 
-	glColor3d(1.0, 0.2, 0.2);
-	textDisp.printToScreen(score.getTimeString(), height, width, height - 24, 6);
+void displayHUDShadow()
+{
+	// Number of checkpoints passed
+	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6 - 1, width - 106 + 1);
+
+	// Current time
+	textDisp.printToScreen("Time: " + score.getTimeString(), height, width, 6 - 1, 6 + 1);
+
+	// Current speed
+	textDisp.printToScreen("Speed: " + std::to_string(moveMult), height, width, 6 - 1, (width / 2) - 55 + 1);
 }
 
 //--------------------------------------------------------------------------------------
@@ -1077,6 +1119,24 @@ void setCheckpoints()
 	checkpoints.Set(7, 20000, 10000, 42000);
 	
 	//to add more increase checkpoints length (~line: 346)
+}
+
+void addPotions()
+{
+	potions.Add(POTION_SLOW, 34000, 10000, 42000);
+	potions.Add(POTION_SLOW, 34000, 10000, 42100);
+	potions.Add(POTION_SLOW, 34000, 10000, 42200);
+	potions.Add(POTION_SLOW, 34000, 10000, 42300);
+	potions.Add(POTION_SPEED, 34000, 10000, 42400);
+	potions.Add(POTION_SPEED, 34000, 10000, 42500);
+	potions.Add(POTION_SPEED, 34000, 10000, 42600);
+	potions.Add(POTION_SPEED, 34000, 10000, 42700);
+	potions.Add(POTION_SPEED, 34000, 10000, 42800);
+	potions.Add(POTION_SPEED, 34000, 10000, 42900);
+	potions.Add(POTION_TOTEM, 34000, 10000, 41100);
+	potions.Add(POTION_TOTEM, 34000, 10000, 41200);
+	potions.Add(POTION_TOTEM, 34000, 10000, 41300);
+	potions.Add(POTION_TOTEM, 34000, 10000, 41400);
 }
 
 //--------------------------------------------------------------------------------------
@@ -5840,7 +5900,7 @@ void IncrementFrameCount()
 	// reset after t
 	if (t > 0.1)
 	{
-		stepIncrement = t/frameCount * 1400;
+		stepIncrement = t/frameCount * 14 * moveMult;
 		angleIncrement = t/frameCount;
 		frameCount = 0;
 		lastClock = clock();

@@ -35,7 +35,11 @@ void Score::start()
 
 int Score::finish()
 {
-	if (started)
+	if (finished)
+	{
+		return finalScore;
+	}
+	else if (started)
 	{
 		finalTime = getElapsed();
 		finalScore = calcScore(finalTime);
@@ -56,6 +60,18 @@ void Score::multiply()
 void Score::multiply(int multi)
 {
 	multiplier += multi;
+}
+
+int Score::getFinalScore()
+{
+	if (finished)
+	{
+		return finalScore;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 std::string Score::getTimeString()
