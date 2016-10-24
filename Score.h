@@ -31,7 +31,7 @@ public:
 	void multiply();
 
 	/// Adds to the current score multiplier
-	void multiply(int multi);
+	void multiply(double multi);
 
 	/// Returns the final score or -1 if not finished.
 	int Score::getFinalScore();
@@ -41,8 +41,8 @@ public:
 
 
 private:
-	int finalScore;
-	int multiplier;
+	long long finalScore;
+	double multiplier;
 
 	int startTime;
 	int finalTime;

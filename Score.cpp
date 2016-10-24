@@ -15,7 +15,7 @@ Score::Score()
 void Score::reset()
 {
 	finalScore = 0;
-	multiplier = 0;
+	multiplier = 1.0;
 	startTime = -1;
 	finalTime = 0;
 
@@ -54,10 +54,10 @@ int Score::finish()
 
 void Score::multiply()
 {
-	multiplier++;
+	multiplier += 0.15;
 }
 
-void Score::multiply(int multi)
+void Score::multiply(double multi)
 {
 	multiplier += multi;
 }
@@ -77,31 +77,35 @@ int Score::getFinalScore()
 std::string Score::getTimeString()
 {
 	std::string str = "";
-	if (started)
-	{
-		int seconds = getElapsed() / 1000;
-		int minutes = seconds / 60;
-		seconds %= 60;
+	int time = 0;
+	if (finished)
+		time = finalTime;
+	else if (started)
+		time = getElapsed();
 
-		str = std::to_string(minutes) + ":";
+	int cs = (time % 1000) / 10;
+	int seconds = time / 1000;
+	int minutes = seconds / 60;
+		
+	seconds %= 60;
 
-		if (seconds < 10)
-			str += "0";
+	str = std::to_string(minutes) + ":";
 
-		str += std::to_string(seconds);
-		str += "." + std::to_string(getElapsed() % 1000);
-	}
-	else
-	{
-		str = "0:00.000";
-	}
+	if (seconds < 10)
+		str += "0";
+	str += std::to_string(seconds) + ".";
+
+	if (cs < 10)
+		str += "0";
+	str += std::to_string(cs);
+
 	return str;
 }
 
 int Score::calcScore(int currentTime)
 {
-	int tenths = currentTime / 100;
-	return (1000000 * pow(tenths, -1)) * multiplier;
+	int tenths = currentTime;
+	return (100000 * (fmax(0, 300000 - currentTime)/4000) * multiplier);
 }
 
 int Score::getElapsed()

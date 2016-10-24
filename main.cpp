@@ -10,6 +10,7 @@
 #include "PotionList.h"
 #include "TextDisplay.h"
 #include "Score.h"
+#include "SaveScore.h"
 #include <string>
 
 
@@ -347,7 +348,12 @@ TexturedPolygons tp;
 TextDisplay textDisp = TextDisplay();
 Score score = Score();
 
-//Checkpoints
+string savefile = "scores.sav";
+SaveScore saver = SaveScore(savefile);
+std::vector<int> scores;
+
+
+//Additional
 const int CHECKPOINT_COUNT = 8;
 CheckpointList checkpoints = CheckpointList(CHECKPOINT_COUNT);
 void setCheckpoints();
@@ -457,6 +463,9 @@ void DeleteImageFromMemory(unsigned char* tempImage);
 // additional funcs : HUD
 void displayHUD();
 void displayHUDShadow();
+
+void displayScores();
+void displayScoresShadow();
 
 // -------------------------------------------------------------------------------------
 
@@ -570,12 +579,13 @@ void Display()
 		DrawBackdrop();
 		checkpoints.callDisplay();
 		potions.callDisplay();
-		
-		glColor3d(1.0, 1.0, 1.0);
+
 		displayHUD();
-		glColor3d(0.0, 0.0, 0.0);
-		displayHUDShadow();
-		
+
+		if (checkpoints.getNoPassed() == CHECKPOINT_COUNT)
+		{
+			displayScores();
+		}
 		
 	glPopMatrix();
 	glDisable (GL_TEXTURE_2D); 
@@ -586,6 +596,13 @@ void Display()
 	if (checkpoints.checkPassed(cam.GetXPos(), cam.GetZPos()))
 	{
 		score.start();
+		if (checkpoints.getNoPassed() == CHECKPOINT_COUNT)
+		{
+			score.finish();
+			saver.addScore(score.getFinalScore());
+			scores = saver.getScores();
+			saver.saveScores(savefile);
+		}
 	}
 
 	switch (potions.checkCollected(cam.GetXPos(), cam.GetZPos()))
@@ -622,6 +639,9 @@ void reshape(int w, int h)
 // Additional Funcs
 void displayHUD()
 {
+	// Set colour white
+	glColor3d(1.0, 1.0, 1.0);
+
 	// Number of checkpoints passed
 	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6, width - 106);
 
@@ -636,10 +656,15 @@ void displayHUD()
 	textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
 	textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
 	textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+
+	displayHUDShadow();
 }
 
 void displayHUDShadow()
 {
+	// Set colour black
+	glColor3d(0.0, 0.0, 0.0);
+
 	// Number of checkpoints passed
 	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6 - 1, width - 106 + 1);
 
@@ -648,6 +673,44 @@ void displayHUDShadow()
 
 	// Current speed
 	textDisp.printToScreen("Speed: " + std::to_string(moveMult), height, width, 6 - 1, (width / 2) - 55 + 1);
+}
+
+void displayScores()
+{
+	int br = 0;
+	int n = 0;
+
+	glColor3d(1.0, 1.0, 1.0);
+	textDisp.printToScreen("Your Score: " + std::to_string(score.getFinalScore()), height, width, height - (height / 3), (width / 2) - 115);
+
+	for (std::vector<int>::size_type i = 0; i != scores.size(); i++)
+	{
+		n++;
+		br -= 24;
+		textDisp.printToScreen(std::to_string(n) + ": " + std::to_string(scores.at(i)), height, width, height - (height / 3) + br, (width / 2) - 65);
+		if (n == 3)
+			break;
+	}
+	displayScoresShadow();
+}
+
+void displayScoresShadow()
+{
+	int br = 0;
+	int n = 0;
+
+	glColor3d(0.0, 0.0, 0.0);
+	textDisp.printToScreen("Your Score: " + std::to_string(score.getFinalScore()), height, width, height - (height / 3) - 1, (width / 2) - 115 + 1);
+
+	for (std::vector<int>::size_type i = 0; i != scores.size(); i++)
+	{
+		n++;
+		br -= 24;
+		textDisp.printToScreen(std::to_string(n) + ": " + std::to_string(scores.at(i)), height, width, height - (height / 3) + br - 1, (width / 2) - 65 + 1);
+		if (n == 3)
+			break;
+	}
+
 }
 
 //--------------------------------------------------------------------------------------
