@@ -1193,23 +1193,44 @@ void setCheckpoints()
 			checkpoints.Set(i, Position[i][0],Position[i][1],Position[i][2]);
 		}
 		else
-			checkpoints.Set(i, Position[i+7][0],Position[i+7][1],Position[i+7][2]);
+			checkpoints.Set(i, Position[i+8][0],Position[i+8][1],Position[i+8][2]);
 	}
 	//to add more increase checkpoints length (~line: 346)
 }
 
 void addPotions()
 {
-	potions.Add(POTION_SLOW, 34000, 10000, 42000);
-	potions.Add(POTION_SLOW, 34000, 10000, 42100);
-	potions.Add(POTION_SLOW, 34000, 10000, 42200);
-	potions.Add(POTION_SLOW, 34000, 10000, 42300);
-	potions.Add(POTION_SPEED, 34000, 10000, 42400);
-	potions.Add(POTION_SPEED, 34000, 10000, 42500);
-	potions.Add(POTION_SPEED, 34000, 10000, 42600);
-	potions.Add(POTION_SPEED, 34000, 10000, 42700);
-	potions.Add(POTION_SPEED, 34000, 10000, 42800);
-	potions.Add(POTION_SPEED, 34000, 10000, 42900);
+	GLdouble PositionSP [6][3] = {{36513, 10384, 30159},{18922, 10000, 42022},{34010, 10000, 24834},{31799, 10000, 27032},{27131, 10000, 40906},{32917, 10000, 20395}};
+
+	GLdouble PositionFP [12][3] = {{36842, 10000, 28252},{37277, 10384, 30059},{11019, 10000, 42894},{25191, 10000, 42811},{33134, 9040, 5337},{32632, 9040, 5342},
+	{36806, 10000, 27412},{31816, 10000, 38723},{8947, 10000, 41066},{35347, 10000, 24434},{32886, 9808, 9190},{31813, 10000, 13187}};
+
+	int mSLOW = 2;
+	int mFAST = 5;
+	int getR = 0;
+	
+	srand(time(NULL));
+	for(int i = 0; i <= mSLOW; i++)//Randomly get each set(Slow Potion) selecting from Position 1-3 and 4-6 respectively.
+	{
+		getR = getRandom(getR);
+		if(getR <= 50)
+		{
+			potions.Add(POTION_SLOW, PositionSP [i][0],PositionSP [i][1],PositionSP [i][2]);
+		}
+		else
+			potions.Add(POTION_SLOW, PositionSP [i+3][0],PositionSP [i+3][1],PositionSP [i+3][2]);
+	}
+	srand(time(NULL));
+	for(int i = 0; i <= mFAST; i++)//Randomly get each set(Fast Potion) selecting from Position 1-6 and 7-12 respectively.
+	{
+		getR = getRandom(getR);
+		if(getR <= 50)
+		{
+			potions.Add(POTION_SPEED, PositionFP [i][0],PositionFP [i][1],PositionFP [i][2]);
+		}
+		else
+			potions.Add(POTION_SPEED, PositionFP [i+6][0],PositionFP [i+6][1],PositionFP [i+6][2]);
+	}
 	potions.Add(POTION_TOTEM, 34000, 10000, 41100);
 	potions.Add(POTION_TOTEM, 34000, 10000, 41200);
 	potions.Add(POTION_TOTEM, 34000, 10000, 41300);
