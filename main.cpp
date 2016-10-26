@@ -6,6 +6,15 @@
 //#include <windows.h> // only used if mouse is required (not portable)
 #include "camera.h"
 #include "texturedPolygons.h"
+#include "CheckpointList.h"
+#include "PotionList.h"
+#include "TextDisplay.h"
+#include "Score.h"
+#include "SaveScore.h"
+#include "GuideArrow.h"
+#include <string>
+
+
 
 //--------------------------------------------------------------------------------------
 
@@ -337,6 +346,27 @@ unsigned char* image = NULL;
 // objects
 Camera cam;
 TexturedPolygons tp;
+TextDisplay textDisp = TextDisplay();
+Score score = Score();
+
+string savefile = "scores.sav";
+SaveScore saver = SaveScore(savefile);
+std::vector<int> scores;
+
+
+//Additional
+const int CHECKPOINT_COUNT = 8;
+CheckpointList checkpoints = CheckpointList(CHECKPOINT_COUNT);
+void setCheckpoints();
+
+PotionList potions = PotionList();
+void addPotions();
+
+//Guide arrow 
+GuideArrow Arrow = GuideArrow();
+void setArrow();
+
+int moveMult = 100;
 
 // initializes setting
 void myinit();
@@ -435,6 +465,16 @@ void CreatePlains();
 // deletes image and clears memory
 void DeleteImageFromMemory(unsigned char* tempImage);
 
+// additional funcs : HUD
+void displayHUD();
+void displayHUDShadow();
+
+void displayScores();
+void displayScoresShadow();
+
+// -------------------------------------------------------------------------------------
+
+
 //--------------------------------------------------------------------------------------
 //  Main function 
 //--------------------------------------------------------------------------------------
@@ -444,7 +484,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(800,500);
-	glutCreateWindow("Murdoch University Campus Tour");
+	glutCreateWindow("Murdoch Runner");
 
 	myinit();
 
@@ -459,8 +499,8 @@ int main(int argc, char **argv)
 	glutMouseFunc(Mouse);
 	
 	// ONLY USE IF REQUIRE MOUSE MOVEMENT
-	glutPassiveMotionFunc(mouseMove);
-	ShowCursor(FALSE);
+	//glutPassiveMotionFunc(mouseMove);
+	//ShowCursor(false);
 
 	glutReshapeFunc(reshape);
 	glutMainLoop();
@@ -474,6 +514,7 @@ void myinit()
 {
 	// set background (sky colour)
 	glClearColor(97.0/255.0, 140.0/255.0, 185.0/255.0, 1.0);
+	
 	
 	// set perpsective
 	gluLookAt(0.0, 1.75, 0.0, 
@@ -504,6 +545,9 @@ void myinit()
 	// load texture images and create display lists
 	CreateTextureList();
 	CreateTextures();
+
+	setCheckpoints();
+	addPotions();
 }
 
 //--------------------------------------------------------------------------------------
@@ -538,12 +582,53 @@ void Display()
 		cam.SetRotateSpeed (angleIncrement);
 		// display images
 		DrawBackdrop();
+		checkpoints.callDisplay();
+		potions.callDisplay();
+
+		displayHUD();
+
+		if (checkpoints.getNoPassed() == CHECKPOINT_COUNT)
+		{
+			displayScores();
+		}
+		
 	glPopMatrix();
 	glDisable (GL_TEXTURE_2D); 
+
+
+	//display arrow
+	glPushMatrix();
+	setArrow();
+	glColor3f(0.5, 0.0, 0.0);
+	Arrow.display();
+	glPopMatrix();
 
 	// clear buffers
 	glFlush();
 	glutSwapBuffers();
+	if (checkpoints.checkPassed(cam.GetXPos(), cam.GetZPos()))
+	{
+		score.start();
+		if (checkpoints.getNoPassed() == CHECKPOINT_COUNT)
+		{
+			score.finish();
+			saver.addScore(score.getFinalScore());
+			scores = saver.getScores();
+			saver.saveScores(savefile);
+		}
+	}
+
+	switch (potions.checkCollected(cam.GetXPos(), cam.GetZPos()))
+	{
+	case POTION_SLOW: moveMult -= 10;
+		break;
+	case POTION_SPEED:moveMult += 20;
+		break;
+	case POTION_TOTEM: score.multiply();
+		break;
+	default:
+		break;
+	}
 }
 
 //--------------------------------------------------------------------------------------
@@ -562,6 +647,83 @@ void reshape(int w, int h)
 	glViewport(0, 0, w, h);
 	gluPerspective(45,ratio,1,250000);	
 	glMatrixMode(GL_MODELVIEW);
+}
+
+// Additional Funcs
+void displayHUD()
+{
+	// Set colour white
+	glColor3d(1.0, 1.0, 1.0);
+
+	// Number of checkpoints passed
+	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6, width - 106);
+
+	// Current time
+	textDisp.printToScreen("Time: " + score.getTimeString(), height, width, 6, 6);
+
+	// Current speed
+	textDisp.printToScreen("Speed: " + std::to_string(moveMult), height, width,6, (width / 2) - 55);
+
+	//Display coordinates: To asist flag / potion placement (Cam is ~450 higher than plane)
+	glColor3d(0.2, 1.0, 0.25);
+	textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
+	textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
+	textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+
+	displayHUDShadow();
+}
+
+void displayHUDShadow()
+{
+	// Set colour black
+	glColor3d(0.0, 0.0, 0.0);
+
+	// Number of checkpoints passed
+	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6 - 1, width - 106 + 1);
+
+	// Current time
+	textDisp.printToScreen("Time: " + score.getTimeString(), height, width, 6 - 1, 6 + 1);
+
+	// Current speed
+	textDisp.printToScreen("Speed: " + std::to_string(moveMult), height, width, 6 - 1, (width / 2) - 55 + 1);
+}
+
+void displayScores()
+{
+	int br = 0;
+	int n = 0;
+
+	glColor3d(1.0, 1.0, 1.0);
+	textDisp.printToScreen("Your Score: " + std::to_string(score.getFinalScore()), height, width, height - (height / 3), (width / 2) - 115);
+
+	for (std::vector<int>::size_type i = 0; i != scores.size(); i++)
+	{
+		n++;
+		br -= 24;
+		textDisp.printToScreen(std::to_string(n) + ": " + std::to_string(scores.at(i)), height, width, height - (height / 3) + br, (width / 2) - 65);
+		if (n == 3)
+			break;
+	}
+	displayScoresShadow();
+}
+
+void displayScoresShadow()
+{
+	int br = 0;
+	int n = 0;
+
+	glColor3d(0.0, 0.0, 0.0);
+	textDisp.printToScreen("Your Score: " + std::to_string(score.getFinalScore()), height, width, height - (height / 3) - 1, (width / 2) - 115 + 1);
+
+	for (std::vector<int>::size_type i = 0; i != scores.size(); i++)
+	{
+		n++;
+		br -= 24;
+		textDisp.printToScreen(std::to_string(n) + ": " + std::to_string(scores.at(i)), height, width, height - (height / 3) + br - 1, (width / 2) - 65 + 1);
+		if (n == 3)
+			break;
+	}
+
 }
 
 //--------------------------------------------------------------------------------------
@@ -1018,6 +1180,81 @@ void DeleteImageFromMemory(unsigned char* tempImage)
 	{
 		delete [] tempImage;
 	}
+}
+
+int getRandom(int random)
+{
+	int getR = rand()%100;
+	return getR;
+}
+
+//Checkpoints
+void setCheckpoints()
+{
+	GLdouble Position [16][3] = {{34000, 10000, 42000},{41661, 8479, 42014},{32000, 10000, 33000},{33900, 10000, 23600},{8000, 10000, 17000},{33000,  9500,  8000},
+	{27000, 10000, 40000},{20000, 10000, 42000},{32700, 10000, 15220},{21046, 10350, 27527},{8245, 10000, 42220},{23090, 10000, 40200},{29180, 10000, 26250},
+	{20060, 10000, 16970},{27300, 10000, 31740},{8310, 10154, 37512}};
+
+	int maxLines = 7;
+	int getR = 0;
+	srand(time(NULL));
+	for(int i = 0; i <= maxLines; i++)//Randomly get each set selecting from Position 1-7 and 8-16 respectively.
+	{
+		getR = getRandom(getR);
+		if(getR <= 50)
+		{
+			checkpoints.Set(i, Position[i][0],Position[i][1],Position[i][2]);
+		}
+		else
+			checkpoints.Set(i, Position[i+8][0],Position[i+8][1],Position[i+8][2]);
+	}
+	//to add more increase checkpoints length (~line: 346)
+}
+
+void addPotions()
+{
+	GLdouble PositionSP [6][3] = {{36513, 10384, 30159},{18922, 10000, 42022},{34010, 10000, 24834},{31799, 10000, 27032},{27131, 10000, 40906},{32917, 10000, 20395}};
+
+	GLdouble PositionFP [12][3] = {{36842, 10000, 28252},{37277, 10384, 30059},{11019, 10000, 42894},{25191, 10000, 42811},{33134, 9040, 5337},{32632, 9040, 5342},
+	{36806, 10000, 27412},{31816, 10000, 38723},{8947, 10000, 41066},{35347, 10000, 24434},{32886, 9808, 9190},{31813, 10000, 13187}};
+
+	int mSLOW = 2;
+	int mFAST = 5;
+	int getR = 0;
+	
+	srand(time(NULL));
+	for(int i = 0; i <= mSLOW; i++)//Randomly get each set(Slow Potion) selecting from Position 1-3 and 4-6 respectively.
+	{
+		getR = getRandom(getR);
+		if(getR <= 50)
+		{
+			potions.Add(POTION_SLOW, PositionSP [i][0],PositionSP [i][1],PositionSP [i][2]);
+		}
+		else
+			potions.Add(POTION_SLOW, PositionSP [i+3][0],PositionSP [i+3][1],PositionSP [i+3][2]);
+	}
+	srand(time(NULL));
+	for(int i = 0; i <= mFAST; i++)//Randomly get each set(Fast Potion) selecting from Position 1-6 and 7-12 respectively.
+	{
+		getR = getRandom(getR);
+		if(getR <= 50)
+		{
+			potions.Add(POTION_SPEED, PositionFP [i][0],PositionFP [i][1],PositionFP [i][2]);
+		}
+		else
+			potions.Add(POTION_SPEED, PositionFP [i+6][0],PositionFP [i+6][1],PositionFP [i+6][2]);
+	}
+	potions.Add(POTION_TOTEM, 34000, 10000, 41100);
+	potions.Add(POTION_TOTEM, 34000, 10000, 41200);
+	potions.Add(POTION_TOTEM, 34000, 10000, 41300);
+	potions.Add(POTION_TOTEM, 34000, 10000, 41400);
+}
+
+
+//Set Arrow
+void setArrow()
+{
+	Arrow.setPosition(cam.GetXLookingAt(), cam.GetYPos() - 200, cam.GetZLookingAt());
 }
 
 //--------------------------------------------------------------------------------------
@@ -1694,7 +1931,7 @@ void CreateTextures()
 	//Interface Textures
 	image = tp.LoadTexture("data/map.raw", 256, 256);
 	tp.CreateTexture(217, image, 256, 256);
-	image = tp.LoadTexture("data/welcome.raw", 512, 512);
+	image = tp.LoadTexture("images/Welcome.raw", 512, 512);
 	tp.CreateTexture(218, image, 512, 512);
 	image = tp.LoadTexture("images/Exit.raw", 512, 512);
 	tp.CreateTexture(219, image, 512, 512);
@@ -1746,10 +1983,11 @@ void CreateTextures()
 	image = tp.LoadTexture("images/NewWindow1.raw", 32, 128);
 	tp.CreateTexture(END_NEXUS_WINDOW_SIDE, image, 32, 128);
 
+	Checkpoint::createTextures();
+	Potion::createTextures();
+
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);	
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-	
 }
 
 //--------------------------------------------------------------------------------------
@@ -5763,6 +6001,9 @@ void CreateTextureList()
 	DrawCylinders ();			// 437-441
 	DrawMapExit ();				// 448-449, 454
 	// 455-459
+
+	Checkpoint::draw(880);
+	Potion::draw(890);
 }
 
 
@@ -5777,7 +6018,7 @@ void IncrementFrameCount()
 	// reset after t
 	if (t > 0.1)
 	{
-		stepIncrement = t/frameCount * 1400;
+		stepIncrement = t/frameCount * 14 * moveMult;
 		angleIncrement = t/frameCount;
 		frameCount = 0;
 		lastClock = clock();

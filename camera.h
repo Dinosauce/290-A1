@@ -104,6 +104,17 @@ public:
 	GLdouble GetAABBMaxZ (const int & tempIndex) {return m_colDetect.GetAABBMaxZ (tempIndex);}
 	///Returns min z fo bounding box at tempIndex.
 	GLdouble GetAABBMinZ (const int & tempIndex) {return m_colDetect.GetAABBMinZ (tempIndex);}
+
+	///Returns X camera position
+	GLdouble GetXPos() { return m_x; }
+	///Returns Y camera position
+	GLdouble GetYPos() { return m_y; }
+	///Returns Z camera position
+	GLdouble GetZPos() { return m_z; }
+
+	///Returns the position where the camera is looking at
+	GLdouble GetXLookingAt(){ return(m_x + m_lookX * 500); }
+	GLdouble GetZLookingAt(){ return (m_z + m_lookZ * 500); }
 	
 	/// Sets the X, Y, Z postion of camera and its horixontal angle.
 	void Position (GLdouble const & tempX,
