@@ -11,6 +11,7 @@
 #include "TextDisplay.h"
 #include "Score.h"
 #include "SaveScore.h"
+#include "GuideArrow.h"
 #include <string>
 
 
@@ -361,6 +362,10 @@ void setCheckpoints();
 PotionList potions = PotionList();
 void addPotions();
 
+//Guide arrow 
+GuideArrow Arrow = GuideArrow();
+void setArrow();
+
 int moveMult = 100;
 
 // initializes setting
@@ -589,6 +594,14 @@ void Display()
 		
 	glPopMatrix();
 	glDisable (GL_TEXTURE_2D); 
+
+
+	//display arrow
+	glPushMatrix();
+	setArrow();
+	glColor3f(0.5, 0.0, 0.0);
+	Arrow.display();
+	glPopMatrix();
 
 	// clear buffers
 	glFlush();
@@ -1235,6 +1248,13 @@ void addPotions()
 	potions.Add(POTION_TOTEM, 34000, 10000, 41200);
 	potions.Add(POTION_TOTEM, 34000, 10000, 41300);
 	potions.Add(POTION_TOTEM, 34000, 10000, 41400);
+}
+
+
+//Set Arrow
+void setArrow()
+{
+	Arrow.setPosition(cam.GetXLookingAt(), cam.GetYPos() - 200, cam.GetZLookingAt());
 }
 
 //--------------------------------------------------------------------------------------

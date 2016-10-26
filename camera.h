@@ -111,6 +111,10 @@ public:
 	GLdouble GetYPos() { return m_y; }
 	///Returns Z camera position
 	GLdouble GetZPos() { return m_z; }
+
+	///Returns the position where the camera is looking at
+	GLdouble GetXLookingAt(){ return(m_x + m_lookX * 500); }
+	GLdouble GetZLookingAt(){ return (m_z + m_lookZ * 500); }
 	
 	/// Sets the X, Y, Z postion of camera and its horixontal angle.
 	void Position (GLdouble const & tempX,
