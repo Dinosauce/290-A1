@@ -1295,7 +1295,11 @@ void addPotions()
 //Set Arrow
 void setArrow()
 {
-	Arrow.setPosition(cam.GetXLookingAt(), cam.GetYPos() - 200, cam.GetZLookingAt());
+	GLdouble angle = -atan2(cam.GetZLookingAt() - 42000, cam.GetXLookingAt() - 22000);
+
+	angle = angle * 180 / PI;
+
+	Arrow.setPosition(cam.GetXLookingAt(), cam.GetYPos() - 200, cam.GetZLookingAt(), angle + 270);
 }
 
 //--------------------------------------------------------------------------------------

@@ -13,34 +13,23 @@
 class GuideArrow
 {
 public:
-	/// Default constructor: Sets position to 0, 0, 0.
+
 	GuideArrow();
 
-	/// Constructor: Sets position to given values.
-	GuideArrow(GLdouble x, GLdouble y, GLdouble z);
+	GuideArrow(GLdouble x, GLdouble y, GLdouble z, GLdouble angle);
 
-	/// Sets position to given values
-	void setPosition(GLdouble x, GLdouble y, GLdouble z);
+	void setPosition(GLdouble x, GLdouble y, GLdouble z, GLdouble angle);
 
-	/// Returns X position
-	GLdouble getX();
 
-	/// Returns Y position
-	GLdouble getY();
-
-	/// Returns Z position
-	GLdouble getZ();
-
-	/// Displayes the Guide Arrow
 	void display();
 
-	/// Draws the Guide Arrow
 	static void drawArrow();
 
 private:
 	GLdouble AP_x;
 	GLdouble AP_y;
 	GLdouble AP_z;
+	GLdouble Angle_xz;
 
 };
 
