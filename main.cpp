@@ -355,7 +355,7 @@ std::vector<int> scores;
 
 
 //Additional
-const int CHECKPOINT_COUNT = 8;
+const int CHECKPOINT_COUNT = 15;
 CheckpointList checkpoints = CheckpointList(CHECKPOINT_COUNT);
 void setCheckpoints();
 
@@ -656,7 +656,7 @@ void displayHUD()
 	glColor3d(1.0, 1.0, 1.0);
 
 	// Number of checkpoints passed
-	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6, width - 106);
+	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6, width - 130);
 
 	// Current time
 	textDisp.printToScreen("Time: " + score.getTimeString(), height, width, 6, 6);
@@ -679,7 +679,7 @@ void displayHUDShadow()
 	glColor3d(0.0, 0.0, 0.0);
 
 	// Number of checkpoints passed
-	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6 - 1, width - 106 + 1);
+	textDisp.printToScreen("Flags: " + std::to_string(checkpoints.getNoPassed()) + "/" + std::to_string(CHECKPOINT_COUNT), height, width, 6 - 1, width - 130 + 1);
 
 	// Current time
 	textDisp.printToScreen("Time: " + score.getTimeString(), height, width, 6 - 1, 6 + 1);
@@ -1185,28 +1185,106 @@ void DeleteImageFromMemory(unsigned char* tempImage)
 int getRandom(int random)
 {
 	int getR = rand()%100;
-	return getR;
+	return getR + 1;
 }
 
 //Checkpoints
 void setCheckpoints()
 {
-	GLdouble Position [16][3] = {{34000, 10000, 42000},{41661, 8479, 42014},{32000, 10000, 33000},{33900, 10000, 23600},{8000, 10000, 17000},{33000,  9500,  8000},
-	{27000, 10000, 40000},{20000, 10000, 42000},{32700, 10000, 15220},{21046, 10350, 27527},{8245, 10000, 42220},{23090, 10000, 40200},{29180, 10000, 26250},
-	{20060, 10000, 16970},{27300, 10000, 31740},{8310, 10154, 37512}};
+	GLdouble Position[75][3] = { { 41776.9, 8429, 42101.2 },
+	{ 37064.9, 9389, 42121.7 },
+	{ 33518.3, 9920, 42083.2 },
+	{ 29545.8, 9920, 41686.3 },
+	{ 25652.3, 9920, 42223.5 },
+	{ 21493.4, 9920, 41631.8 },
+	{ 18124.2, 9920, 42576.3 },
+	{ 14736.2, 9920, 41555.3 },
+	{ 11204.1, 9920, 42171.2 },
+	{ 9084.31, 9920, 41440.3 },
+	{ 3827.2, 9920, 42159.6 },
+	{ 32973.4, 9920, 39581.6 },
+	{ 32429.4, 9920, 35847.8 },
+	{ 33159.8, 9920, 31434.5 },
+	{ 32493.7, 9920, 26630.1 },
+	{ 34299.1, 9920, 23954.3 },
+	{ 33305.1, 9920, 20852 },
+	{ 32583.7, 9920, 17067.4 },
+	{ 33122.4, 9920, 12668.2 },
+	{ 32697.7, 9566, 8066.03 },
+	{ 32638.7, 8990, 5237.41 },
+	{ 30628.6, 9035.35, 5250.04 },
+	{ 25999.6, 9035.35, 5660.98 },
+	{ 22236.6, 9320.52, 7421.03 },
+	{ 17642.1, 9035.99, 5403.92 },
+	{ 13718.2, 9353.62, 7534.18 },
+	{ 8064.36, 9633.7, 8775.71 },
+	{ 3717.82, 9850, 10635.1 },
+	{ 7367.69, 9920, 13141.5 },
+	{ 10247.5, 9920, 16186.2 },
+	{ 14201.9, 9920, 12020.5 },
+	{ 17302.9, 9920, 14515.2 },
+	{ 21057.7, 9920, 11862.7 },
+	{ 23258.2, 9920, 14583.5 },
+	{ 26161.3, 9920, 12152.8 },
+	{ 28660.9, 9920, 13468.9 },
+	{ 30176.4, 9920, 16930.5 },
+	{ 27888.8, 9920, 19188.8 },
+	{ 25979.3, 10390.5, 22089.7 },
+	{ 21837.4, 10150, 19938.9 },
+	{ 19486.7, 10160.8, 23062.9 },
+	{ 15211.1, 10150, 22073.3 },
+	{ 10310.2, 10150, 19931 },
+	{ 7227.25, 10008.9, 22710.9 },
+	{ 7314.2, 10013.6, 26043.9 },
+	{ 9194.18, 10150, 28469.2 },
+	{ 12862.8, 10294.9, 25913.1 },
+	{ 16999.1, 10375, 28965.7 },
+	{ 22286.2, 10137.3, 27102.2 },
+	{ 26253.5, 9980.3, 29686.7 },
+	{ 27941.8, 9920, 35347.5 },
+	{ 23666.1, 10068.1, 37571.7 },
+	{ 19028.8, 10333.1, 34749.8 },
+	{ 13860.4, 10150, 36810.7 },
+	{ 10249.8, 10159.2, 35771 },
+	{ 7727.17, 9987.2, 39614.2 },
+	{ 12567.1, 9920, 40736.3 },
+	{ 16559.5, 9920, 40134.5 },
+	{ 20479.4, 9920, 42634 },
+	{ 21830.3, 9951.3, 39981.1 },
+	{ 24986, 10009.3, 39334.7 },
+	{ 28307, 9920, 39428.7 },
+	{ 30045.6, 9920, 37573.3 },
+	{ 30609.6, 9920, 35426.6 },
+	{ 30548.2, 9920, 33140.1 },
+	{ 33243.6, 9920, 31747.1 },
+	{ 32085.8, 9920, 28806.4 },
+	{ 30747.9, 9920, 26189.9 },
+	{ 33080.5, 9920, 24766.1 },
+	{ 30484.2, 9920, 21396.6 },
+	{ 33178, 9920, 18686.6 },
+	{ 30457.4, 9920, 15482.4 },
+	{ 33100.5, 9920, 12938.9 },
+	{ 30452.7, 9831.8, 9516.36 },
+	{ 33171.4, 9854, 9229.96 } };
 
-	int maxLines = 7;
+	int maxLines = 15;
 	int getR = 0;
 	srand(time(NULL));
-	for(int i = 0; i <= maxLines; i++)//Randomly get each set selecting from Position 1-7 and 8-16 respectively.
+	for(int i = 0; i < maxLines; i++)//Randomly get each set selecting from Position 1-7 and 8-16 respectively.
 	{
 		getR = getRandom(getR);
-		if(getR <= 50)
+		if(getR < 20)
 		{
 			checkpoints.Set(i, Position[i][0],Position[i][1],Position[i][2]);
 		}
+		else if (getR < 40)
+			checkpoints.Set(i, Position[i+15][0],Position[i+15][1],Position[i+15][2]);
+		else if (getR < 60)
+			checkpoints.Set(i, Position[i + 30][0], Position[i + 30][1], Position[i + 30][2]);
+		else if (getR < 80)
+			checkpoints.Set(i, Position[i + 45][0], Position[i + 45][1], Position[i + 45][2]);
 		else
-			checkpoints.Set(i, Position[i+8][0],Position[i+8][1],Position[i+8][2]);
+			checkpoints.Set(i, Position[i + 60][0], Position[i + 60][1], Position[i + 60][2]);
 	}
 	//to add more increase checkpoints length (~line: 346)
 }
