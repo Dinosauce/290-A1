@@ -34,7 +34,7 @@ public:
 	int getNoPassed() { return noPassed; };
 
 	/// Returns constant referance to specified checkpoint
-	const Checkpoint & Get(int index) const;
+	Checkpoint & Get(int index) const;
 
 
 private:

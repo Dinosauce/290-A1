@@ -78,7 +78,7 @@ GLdouble CheckpointList::getDistance(GLdouble x1, GLdouble z1, GLdouble x2, GLdo
 	return sqrt(pow((x2 - x1), 2) + pow((z2 - z1), 2));
 }
 
-const Checkpoint & CheckpointList::Get(int index) const
+Checkpoint & CheckpointList::Get(int index) const
 {
 	return checkpoints[index];
 }

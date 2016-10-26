@@ -12,6 +12,7 @@
 #include "Score.h"
 #include "SaveScore.h"
 #include "GuideArrow.h"
+#include "NearestPoints.h"
 #include <string>
 
 
@@ -365,6 +366,10 @@ void addPotions();
 //Guide arrow 
 GuideArrow Arrow = GuideArrow();
 void setArrow();
+int NumberOfPassed=0;
+
+//calculate NearestPoints
+NearestPoints NP = NearestPoints();
 
 int moveMult = 120;
 
@@ -548,6 +553,12 @@ void myinit()
 
 	setCheckpoints();
 	addPotions();
+
+	//set checkpoints to calculate the nearest one
+	for (int i = 0; i < CHECKPOINT_COUNT; i++)
+	{
+		NP.setCheckPoints_XZ(checkpoints.Get(i).getX(), checkpoints.Get(i).getZ());
+	}
 }
 
 //--------------------------------------------------------------------------------------
@@ -596,8 +607,12 @@ void Display()
 	glDisable (GL_TEXTURE_2D); 
 
 
+	//calculate the nearest checkpoints
+
+
 	//display arrow
 	glPushMatrix();
+	NP.CalculateNP(cam.GetXPos(), cam.GetZPos());
 	setArrow();
 	glColor3f(0.5, 0.0, 0.0);
 	Arrow.display();
@@ -1295,8 +1310,12 @@ void addPotions()
 //Set Arrow
 void setArrow()
 {
-	GLdouble angle = -atan2(cam.GetZLookingAt() - 42000, cam.GetXLookingAt() - 22000);
 
+	GLdouble targetX = NP.GetNearestPoints_X();
+	GLdouble targetZ = NP.GetNearestPoints_Z();
+
+	GLdouble angle = -atan2(cam.GetZLookingAt() - targetZ, cam.GetXLookingAt() - targetX);
+	 
 	angle = angle * 180 / PI;
 
 	Arrow.setPosition(cam.GetXLookingAt(), cam.GetYPos() - 200, cam.GetZLookingAt(), angle + 270);
