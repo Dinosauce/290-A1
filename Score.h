@@ -11,6 +11,7 @@
 #include <cmath>
 #include <string>
 
+/// Score: Determines the Score using time taken and multipliers
 class Score
 {
 
@@ -41,20 +42,20 @@ public:
 
 
 private:
-	long long finalScore;
+	long long finalScore; 
 	double multiplier;
 
-	int startTime;
-	int finalTime;
+	int startTime;	/// Start time of the current score
+	int finalTime;	/// Finish time of the current score
 
-	bool started;
+	bool started;	
 	bool finished;
 	bool ready;
 
-	// Calculates the current score
+	/// Calculates the current score
 	int calcScore(int currentTime);
 
-	// Returns the time since start
+	/// Returns the time since start
 	int getElapsed();
 
 

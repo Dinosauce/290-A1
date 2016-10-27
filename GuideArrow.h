@@ -10,19 +10,24 @@
 #include <GL/glut.h>
 #include "texturedPolygons.h"
 
+/// GuideArrow: Displays hints arrow on screen
 class GuideArrow
 {
 public:
 
+	/// Default Constructor: Sets values to 0.
 	GuideArrow();
 
+	/// Constructor: Sets given GuideArrow coordinates and angle.
 	GuideArrow(GLdouble x, GLdouble y, GLdouble z, GLdouble angle);
 
+	/// Sets given position and angle
 	void setPosition(GLdouble x, GLdouble y, GLdouble z, GLdouble angle);
 
-
+	/// Displays guidearrow
 	void display();
 
+	/// Sets the verticies
 	static void drawArrow();
 
 private:

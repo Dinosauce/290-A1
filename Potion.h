@@ -55,7 +55,7 @@ private:
 	GLdouble m_yPos;
 	GLdouble m_zPos;
 
-	int type;
+	int type;		/// Determines the type of potion to display
 
 	static TexturedPolygons texpol;
 	static int dispListNo;

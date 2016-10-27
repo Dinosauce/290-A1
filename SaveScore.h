@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <algorithm>
 
-
+/// SaveScore: Handles file loading and saving of Scores
 class SaveScore
 {
 public:

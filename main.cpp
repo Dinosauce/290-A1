@@ -1225,7 +1225,7 @@ void setCheckpoints()
 		{ 42000, 8370, 42150 }, { 36500, 10270, 30150 } 
 	};
 
-	int maxLines = 13;
+	int maxLines = CHECKPOINT_COUNT - 2;
 	int getR = 0;
 	srand(time(NULL));
 	for(int i = 0; i < maxLines; i++)//Randomly get each set selecting from Position 1-7 and 8-16 respectively.
