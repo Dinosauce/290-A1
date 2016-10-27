@@ -1225,7 +1225,7 @@ void setCheckpoints()
 		{ 42000, 8370, 42150 }, { 36500, 10270, 30150 } 
 	};
 
-	int maxLines = CHECKPOINT_COUNT - 2;
+	int maxLines = CHECKPOINT_COUNT;
 	int getR = 0;
 	srand(time(NULL));
 	for(int i = 0; i < maxLines; i++)//Randomly get each set selecting from Position 1-7 and 8-16 respectively.
@@ -1245,13 +1245,7 @@ void setCheckpoints()
 			checkpoints.Set(i, Position[i + 60][0], Position[i + 60][1], Position[i + 60][2]);
 	}
 
-	//make two of checkpoints stay
-	checkpoints.Set(maxLines, Position[75][0], Position[75][1], Position[75][2]);
-	checkpoints.Set(maxLines + 1, Position[76][0], Position[76][1], Position[76][2]);
-
 	//to add more increase checkpoints length (~line: 346)
-
-
 }
 
 void addPotions()
