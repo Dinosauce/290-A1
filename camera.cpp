@@ -230,7 +230,7 @@ void Camera::MoveLR()
 	if (m_CollisionDetectionOn)
 	{
 		GLdouble startX = m_x + moveX * 1.0;
-		GLdouble startZ = m_z + moveZ * m_moveSpeed * 1.0;
+		GLdouble startZ = m_z + moveZ * 1.0;
 
 		// check if collsion
 		if (!(m_colDetect.Collide(startX + m_lookXX, m_y + m_lookYY, startZ + m_lookZZ)))
