@@ -334,6 +334,8 @@ bool DisplayExit = false;
 bool lightsOn;
 // display ECL block
 bool displayECL = true;
+// show coords
+bool debug = false;
 
 // varibles used for tarnslating graphics etc
 GLdouble step, step2, stepLength;
@@ -620,6 +622,8 @@ void Display()
 	// clear buffers
 	glFlush();
 	glutSwapBuffers();
+
+	// Checkpoint/Potion Logic
 	if (checkpoints.checkPassed(cam.GetXPos(), cam.GetZPos()))
 	{
 		score.start();
@@ -678,11 +682,14 @@ void displayHUD()
 	// Current speed
 	textDisp.printToScreen("Speed: " + std::to_string(moveMult), height, width,6, (width / 2) - 55);
 
-	//Display coordinates: To asist flag / potion placement (Cam is ~450 higher than plane)
-	glColor3d(0.2, 1.0, 0.25);
-	textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
-	textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
-	textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+	if (debug)
+	{
+		//Display coordinates: To asist flag / potion placement (Cam is ~450 higher than plane)
+		glColor3d(0.2, 1.0, 0.25);
+		textDisp.printToScreen(std::to_string(cam.GetXPos()), height, width, 50, 0);
+		textDisp.printToScreen(std::to_string(cam.GetYPos()), height, width, 100, 0);
+		textDisp.printToScreen(std::to_string(cam.GetZPos()), height, width, 75, 0);
+	}
 
 	displayHUDShadow();
 }
@@ -878,7 +885,10 @@ void keys(unsigned char key, int x, int y)
 			}
 		}
 		break;
-		
+		case 'g':
+		case 'G':
+			debug = !debug;
+			break;
 	}
 }
 
